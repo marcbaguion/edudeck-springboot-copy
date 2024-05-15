@@ -12,7 +12,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name="tbldocument")
-public class UploadDocumentEntity {
+public class DocumentEntity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,11 +40,11 @@ public class UploadDocumentEntity {
     }
 
 
-    public UploadDocumentEntity() {
+    public DocumentEntity() {
 
     }
 
-    public UploadDocumentEntity(int documentID, String documentTitle, String fileType, byte[] fileContent,
+    public DocumentEntity(int documentID, String documentTitle, String fileType, byte[] fileContent,
             String fileSize) {
         this.documentID = documentID;
         this.documentTitle = documentTitle;

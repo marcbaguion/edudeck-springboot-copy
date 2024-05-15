@@ -7,14 +7,14 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.it332.edudeck.Entity.UploadDocumentEntity;
-import com.it332.edudeck.Repository.UploadDocumentRepository;
+import com.it332.edudeck.Entity.DocumentEntity;
+import com.it332.edudeck.Repository.DocumentRepository;
 
 @Service
 public class PDFDocumentService {
     
     @Autowired
-    UploadDocumentRepository documentRepository;
+    DocumentRepository documentRepository;
 
     // // Method to extract text from a document
     // public String extractTextFromDocument(int documentId) {

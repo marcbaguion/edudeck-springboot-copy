@@ -7,15 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.it332.edudeck.Entity.UploadDocumentEntity;
+import com.it332.edudeck.Entity.DocumentEntity;
 import com.it332.edudeck.Entity.UserEntity;
-import com.it332.edudeck.Repository.UploadDocumentRepository;
+import com.it332.edudeck.Repository.DocumentRepository;
 
 @Service
-public class UploadDocumentService {
+public class DocumentService {
     
     @Autowired
-    UploadDocumentRepository drepo;
+    DocumentRepository drepo;
 
     // Helper method to format file size
      private String formatFileSize(long size) {
@@ -32,7 +32,7 @@ public class UploadDocumentService {
     }
 
     // Insert or upload a document file in tbldocument - Create
-    public UploadDocumentEntity insertDocument(UploadDocumentEntity document, MultipartFile file, UserEntity user) throws IOException {
+    public DocumentEntity insertDocument(DocumentEntity document, MultipartFile file, UserEntity user) throws IOException {
     // Set file content as byte array
     document.setFileContent(file.getBytes());
 
@@ -50,17 +50,17 @@ public class UploadDocumentService {
 
     //Read all records in tbdocument - Read
     
-    public List<UploadDocumentEntity> getAllDocuments() {
+    public List<DocumentEntity> getAllDocuments() {
         // Fetch only non-deleted documents
         return drepo.findByIsDeletedFalse();
     }
     
-    public List<UploadDocumentEntity> getDocumentsByUser(UserEntity user) {
+    public List<DocumentEntity> getDocumentsByUser(UserEntity user) {
         return drepo.findByUserAndIsDeletedFalse(user);
     }
 
-    public UploadDocumentEntity updateDocument(int documentID, String newFileName) {
-        UploadDocumentEntity document = drepo.findById(documentID)
+    public DocumentEntity updateDocument(int documentID, String newFileName) {
+        DocumentEntity document = drepo.findById(documentID)
                 .orElseThrow(() -> new NoSuchElementException("Document " + documentID + " does not exist"));
     
         // Update the file name
@@ -72,8 +72,8 @@ public class UploadDocumentService {
     }
 
     // Delete the document file in tbldocument - Soft Delete
-    public UploadDocumentEntity deleteDocument(int documentID) {
-        UploadDocumentEntity document = drepo.findById(documentID)
+    public DocumentEntity deleteDocument(int documentID) {
+        DocumentEntity document = drepo.findById(documentID)
                 .orElseThrow(() -> new NoSuchElementException("Document " + documentID + " does not exist"));
     
         // Set isDeleted flag to true

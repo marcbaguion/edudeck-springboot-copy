@@ -1,12 +1,15 @@
 package com.it332.edudeck.Entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 
 @Entity
@@ -32,8 +35,11 @@ public class UserEntity {
     private String subscription = "Free"; // Default subscription status
     private String bio; // Optional field, initialized to null
     private byte[] profilePicture; // Optional field, initialized to null
-
+	// private boolean isDeleted = false;
 	
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<FlashcardDeckEntity> flashcardDecks;
+
 	public UserEntity() {
 		super();
 	}
