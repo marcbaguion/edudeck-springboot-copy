@@ -1,5 +1,8 @@
 package com.it332.edudeck.Entity;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -24,11 +28,18 @@ public class DocumentEntity {
     @Lob
     private byte[] fileContent;
     private String fileSize;
+    private LocalDateTime dateUploaded = LocalDateTime.now();
     private boolean isDeleted;
 
     @ManyToOne
     @JoinColumn(name = "userid")
     private UserEntity user;
+
+     @OneToMany(mappedBy = "document")
+    private List<HighlightEntity> highlightedTerms;
+
+    @OneToMany(mappedBy = "document")
+    private List<HighlightEntity> highlightedDef;
 
     public UserEntity getUser() {
         return user;
@@ -109,4 +120,13 @@ public class DocumentEntity {
     public void setIsDeleted(boolean isDeleted) {
         this.isDeleted = isDeleted;
     }
+
+    public LocalDateTime getDateUploaded() {
+        return dateUploaded;
+    }
+
+    public void setDateUploaded(LocalDateTime dateUploaded) {
+        this.dateUploaded = dateUploaded;
+    }
+
 }

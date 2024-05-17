@@ -28,6 +28,10 @@ public class FlashcardDeckEntity {
     @JoinColumn(name = "userid", nullable = false)
     private UserEntity user;
 
+    @OneToOne
+    @JoinColumn(name = "document_id")
+    private DocumentEntity document;
+
     @OneToMany(mappedBy = "flashcardDeck", cascade = CascadeType.ALL)
     private Set<FlashcardEntity> flashcards;
 
@@ -101,4 +105,13 @@ public class FlashcardDeckEntity {
     public void setDeleted(boolean isDeleted) {
         this.isDeleted = isDeleted;
     }
+
+    public DocumentEntity getDocument() {
+        return document;
+    }
+
+    public void setDocument(DocumentEntity document) {
+        this.document = document;
+    }
+    
 }

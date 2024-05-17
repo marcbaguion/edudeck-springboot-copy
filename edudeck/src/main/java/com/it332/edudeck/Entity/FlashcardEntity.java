@@ -22,6 +22,7 @@ public class FlashcardEntity {
     private String answer;
     private LocalDateTime dateCreated = LocalDateTime.now();
     private boolean isDeleted = false;
+    private int reviewCount = 0;
 
     @ManyToOne
     @JoinColumn(name = "deck_id", nullable = false)
@@ -83,5 +84,18 @@ public class FlashcardEntity {
         this.flashcardDeck = flashcardDeck;
     }
 
+    public void setFlashcardId(int flashcardId) {
+        this.flashcardId = flashcardId;
+    }
+
+    public int getReviewCount() {
+        return reviewCount;
+    }
+
+    public void setReviewCount(int reviewCount) {
+        this.reviewCount = reviewCount;
+    }
+
+    
     
 }

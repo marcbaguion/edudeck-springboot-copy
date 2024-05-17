@@ -29,13 +29,13 @@ public class UserEntity {
     @Column(nullable = false)
     private String password;
 
-    private String name = ""; // Initialize to empty string
-    private String mobileNumber; // Optional field, initialized to null
-    private LocalDateTime dateCreated = LocalDateTime.now(); // Initialize to current date and time
-    private String subscription = "Free"; // Default subscription status
-    private String bio; // Optional field, initialized to null
-    private byte[] profilePicture; // Optional field, initialized to null
-	// private boolean isDeleted = false;
+    private String name = "";
+    private String mobileNumber;
+    private LocalDateTime dateCreated = LocalDateTime.now();
+    private String subscription = "Free";
+    private String bio;
+    private byte[] profilePicture;
+	private boolean isDeleted = false;
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<FlashcardDeckEntity> flashcardDecks;
@@ -130,4 +130,22 @@ public class UserEntity {
 	    public void setProfilePicture(byte[] profilePicture) {
 	        this.profilePicture = profilePicture;
 	    }
+
+		public boolean isDeleted() {
+			return isDeleted;
+		}
+
+		public void setDeleted(boolean isDeleted) {
+			this.isDeleted = isDeleted;
+		}
+
+		public Set<FlashcardDeckEntity> getFlashcardDecks() {
+			return flashcardDecks;
+		}
+
+		public void setFlashcardDecks(Set<FlashcardDeckEntity> flashcardDecks) {
+			this.flashcardDecks = flashcardDecks;
+		}
+
+		
 }
