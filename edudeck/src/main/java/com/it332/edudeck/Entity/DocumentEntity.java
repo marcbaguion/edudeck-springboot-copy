@@ -35,7 +35,7 @@ public class DocumentEntity {
     @JoinColumn(name = "userid")
     private UserEntity user;
 
-     @OneToMany(mappedBy = "document")
+    @OneToMany(mappedBy = "document")
     private List<HighlightEntity> highlightedTerms;
 
     @OneToMany(mappedBy = "document")

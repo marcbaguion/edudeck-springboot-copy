@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 
@@ -36,6 +37,9 @@ public class UserEntity {
     private String bio;
     private byte[] profilePicture;
 	private boolean isDeleted = false;
+
+	@OneToMany(mappedBy = "user")
+    private List<DocumentEntity> documents;
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<FlashcardDeckEntity> flashcardDecks;
