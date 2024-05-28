@@ -4,10 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.it332.edudeck.Entity.ProfileEntity;
+import com.it332.edudeck.Entity.UserEntity;
 import com.it332.edudeck.Repository.ProfileRepository;
+import com.it332.edudeck.Repository.UserRepository;
 
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProfileService {
@@ -15,27 +15,17 @@ public class ProfileService {
     @Autowired
     private ProfileRepository profileRepository;
 
-    public ProfileEntity createProfile(ProfileEntity profile) {
-        return profileRepository.save(profile);
-    }
+    @Autowired
+    private UserRepository userRepository;
 
-    public List<ProfileEntity> getAllProfiles() {
-        return profileRepository.findAll();
-    }
-
-    public Optional<ProfileEntity> getProfileById(int id) {
-        return profileRepository.findById(id);
-    }
-
-    public boolean softDeleteProfile(int id) {
-        Optional<ProfileEntity> profileOptional = profileRepository.findById(id);
-        if (profileOptional.isPresent()) {
-            ProfileEntity profile = profileOptional.get();
-            profile.setDeleted(true);
-            profileRepository.save(profile);
-            return true;
-        } else {
-            return false;
+    public ProfileEntity saveProfilePicture(int userno, byte[] profilePicture) {
+        UserEntity user = userRepository.findById(userno).orElse(null);
+        ProfileEntity profile = profileRepository.findByUser(user);
+        if (profile == null) {
+            profile = new ProfileEntity();
+            profile.setUser(user);
         }
+        profile.setProfilePicture(profilePicture);
+        return profileRepository.save(profile);
     }
 }

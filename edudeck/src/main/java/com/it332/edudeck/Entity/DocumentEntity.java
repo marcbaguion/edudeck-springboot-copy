@@ -28,7 +28,6 @@ public class DocumentEntity {
     @Lob
     private byte[] fileContent;
     private String fileSize;
-    private LocalDateTime dateUploaded = LocalDateTime.now();
     private boolean isDeleted;
 
     @ManyToOne
@@ -119,14 +118,6 @@ public class DocumentEntity {
 
     public void setIsDeleted(boolean isDeleted) {
         this.isDeleted = isDeleted;
-    }
-
-    public LocalDateTime getDateUploaded() {
-        return dateUploaded;
-    }
-
-    public void setDateUploaded(LocalDateTime dateUploaded) {
-        this.dateUploaded = dateUploaded;
     }
 
 }

@@ -1,46 +1,46 @@
 package com.it332.edudeck.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.it332.edudeck.Entity.ProfileEntity;
+import com.it332.edudeck.Entity.UserEntity;
+import com.it332.edudeck.Repository.ProfileRepository;
+import com.it332.edudeck.Repository.UserRepository;
 import com.it332.edudeck.Service.ProfileService;
 
-import java.util.List;
+import java.io.IOException;
 
 @RestController
-@RequestMapping("/api/profiles")
+@CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping("/api/profile")
 public class ProfileController {
 
     @Autowired
     private ProfileService profileService;
 
-    @PostMapping("/create")
-    public ResponseEntity<ProfileEntity> createProfile(@RequestBody ProfileEntity profileEntity) {
-        ProfileEntity createdProfile = profileService.createProfile(profileEntity);
-        return ResponseEntity.ok(createdProfile);
+    @Autowired
+    private UserRepository urepo;
+
+    @Autowired
+    private ProfileRepository prepo;
+
+    @PostMapping("/uploadProfilePicture")
+    public ProfileEntity uploadProfilePicture(@RequestParam("userno") int userno, @RequestParam("file") MultipartFile file) {
+    byte[] profilePicture = null;
+    try {
+        profilePicture = file.getBytes();
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    return profileService.saveProfilePicture(userno, profilePicture);
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<ProfileEntity>> getAllProfiles() {
-        return ResponseEntity.ok(profileService.getAllProfiles());
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<ProfileEntity> getProfileById(@PathVariable int id) {
-        ProfileEntity profileEntity = profileService.getProfileById(id)
-                .orElseThrow(() -> new RuntimeException("Profile not found with id: " + id));
-        return ResponseEntity.ok(profileEntity);
-    }
-
-    @PutMapping("/softdelete/{id}")
-    public ResponseEntity<Void> softDeleteProfile(@PathVariable int id) {
-        boolean isDeleted = profileService.softDeleteProfile(id);
-        if (isDeleted) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    @GetMapping("/getProfilePicture/{userno}")
+    public byte[] getProfilePicture(@PathVariable int userno) {
+        UserEntity user = urepo.findById(userno).orElse(null);
+        ProfileEntity profile = prepo.findByUser(user);
+        return profile != null ? profile.getProfilePicture() : null;
     }
 }

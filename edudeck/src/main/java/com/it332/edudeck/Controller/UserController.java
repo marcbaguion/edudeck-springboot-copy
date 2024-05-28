@@ -1,8 +1,9 @@
 package com.it332.edudeck.Controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
-
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.it332.edudeck.Service.UserService;
 import com.it332.edudeck.Entity.UserEntity;
+import com.it332.edudeck.Repository.UserRepository;
 
 
 @RestController
@@ -28,6 +30,9 @@ public class UserController {
 	
 	@Autowired
     UserService userv;
+
+    @Autowired
+    UserRepository urepo;
 	
 	//R -Read
     @GetMapping("/getAllUsers")
@@ -36,28 +41,27 @@ public class UserController {
     }
     
 	// U - Update a user record
-    @PutMapping("/updateUser")
-    public ResponseEntity<?> updateUser(@RequestParam int userid, @RequestBody UserEntity newUserDetails) {
-        try {
-            UserEntity updatedUser = userv.updateUser(userid, newUserDetails);
-            return ResponseEntity.ok(updatedUser);
-        } catch (IllegalArgumentException e) {
-            String errorMessage = e.getMessage();
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
-        }
+    @PutMapping("/updateUser/{userid}")
+    public UserEntity updateUser(@PathVariable int userid, @RequestBody UserEntity newUserDetails){
+        return userv.updateUser(userid, newUserDetails);
     }
 	
 
  	
  	// D - Delete a user record
- 	@DeleteMapping("/deleteUser/{userid}")
- 	public String deleteUser(@PathVariable int userid) {
- 		return userv.deleteUser(userid);
- 	}
-
-	
-	@GetMapping("/helloworld")
-	public String printHelloWorld(){
-		return "Hello World!";
-	}
+ 	@PutMapping("/deleteUser/{userid}")
+    public ResponseEntity<java.util.Map<String, String>> deleteUser(@PathVariable int userid){
+        java.util.Map<String, String> response = new HashMap<>();
+        Optional<UserEntity> userOptional = urepo.findById(userid);
+        if (userOptional.isPresent()) {
+            UserEntity user = userOptional.get();
+            user.setDeleted(true); // Set isDeleted to true instead of deleting the record
+            urepo.save(user); // Save the updated user record
+            response.put("message", "User " + userid + " is successfully deleted");
+        }
+        else{
+            response.put("message", "User " + userid + " does not exist");
+        }
+        return ResponseEntity.ok(response);
+    }
 }

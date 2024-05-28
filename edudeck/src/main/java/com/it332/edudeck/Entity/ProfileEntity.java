@@ -4,6 +4,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -14,14 +17,20 @@ public class ProfileEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int profileId;
 
-    private boolean isDeleted = false;
+    @OneToOne
+    @JoinColumn(name = "userid", referencedColumnName = "userid")
+    private UserEntity user;
+
+    @Lob
+    private byte[] profilePicture;
 
     public ProfileEntity() {
     }
 
-    public ProfileEntity(int profileId, boolean isDeleted) {
+    public ProfileEntity(int profileId, UserEntity user, byte[] profilePicture) {
         this.profileId = profileId;
-        this.isDeleted = isDeleted;
+        this.user = user;
+        this.profilePicture = profilePicture;
     }
 
     public int getProfileId() {
@@ -31,15 +40,21 @@ public class ProfileEntity {
     public void setProfileId(int profileId) {
         this.profileId = profileId;
     }
-
-    public boolean isDeleted() {
-        return isDeleted;
-    }
-
-    public void setDeleted(boolean isDeleted) {
-        this.isDeleted = isDeleted;
-    }
-
     
+    public UserEntity getUser() {
+        return user;
+    }
+
+    public void setUser(UserEntity user) {
+        this.user = user;
+    }
+
+    public byte[] getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(byte[] profilePicture) {
+        this.profilePicture = profilePicture;
+    }
 
 }

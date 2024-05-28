@@ -30,29 +30,23 @@ public class UserEntity {
     @Column(nullable = false)
     private String password;
 
-    private String name = "";
-    private String mobileNumber;
-    private LocalDateTime dateCreated = LocalDateTime.now();
-    private String subscription = "Free";
-    private String bio;
-    private byte[] profilePicture;
 	private boolean isDeleted = false;
 
 	@OneToMany(mappedBy = "user")
     private List<DocumentEntity> documents;
-	
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private Set<FlashcardDeckEntity> flashcardDecks;
 
 	public UserEntity() {
 		super();
 	}
 
-	public UserEntity(int userid, String username, String email) {
+	public UserEntity(int userid, String username, String password, String email, boolean isDeleted) {
 		super();
 		this.userid = userid;
 		this.username = username;
 		this.email = email;
+		this.password = password;
+        this.email = email;
+        this.isDeleted = isDeleted;
 	}
 
 	public int getUserid() {
@@ -87,54 +81,6 @@ public class UserEntity {
 	        this.password = password;
 	    }
 
-	    public String getName() {
-	        return name;
-	    }
-
-	    public void setName(String name) {
-	        this.name = name;
-	    }
-
-	    public String getMobileNumber() {
-	        return mobileNumber;
-	    }
-
-	    public void setMobileNumber(String mobileNumber) {
-	        this.mobileNumber = mobileNumber;
-	    }
-
-	    public LocalDateTime getDateCreated() {
-	        return dateCreated;
-	    }
-
-	    public void setDateCreated(LocalDateTime dateCreated) {
-	        this.dateCreated = dateCreated;
-	    }
-
-	    public String getSubscription() {
-	        return subscription;
-	    }
-
-	    public void setSubscription(String subscription) {
-	        this.subscription = subscription;
-	    }
-
-	    public String getBio() {
-	        return bio;
-	    }
-
-	    public void setBio(String bio) {
-	        this.bio = bio;
-	    }
-
-	    public byte[] getProfilePicture() {
-	        return profilePicture;
-	    }
-
-	    public void setProfilePicture(byte[] profilePicture) {
-	        this.profilePicture = profilePicture;
-	    }
-
 		public boolean isDeleted() {
 			return isDeleted;
 		}
@@ -143,13 +89,4 @@ public class UserEntity {
 			this.isDeleted = isDeleted;
 		}
 
-		public Set<FlashcardDeckEntity> getFlashcardDecks() {
-			return flashcardDecks;
-		}
-
-		public void setFlashcardDecks(Set<FlashcardDeckEntity> flashcardDecks) {
-			this.flashcardDecks = flashcardDecks;
-		}
-
-		
 }
