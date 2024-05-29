@@ -1,8 +1,5 @@
 package com.it332.edudeck.Entity;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,7 +8,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -34,12 +30,6 @@ public class DocumentEntity {
     @JoinColumn(name = "userid")
     private UserEntity user;
 
-    @OneToMany(mappedBy = "document")
-    private List<HighlightEntity> highlightedTerms;
-
-    @OneToMany(mappedBy = "document")
-    private List<HighlightEntity> highlightedDef;
-
     public UserEntity getUser() {
         return user;
     }
@@ -54,8 +44,7 @@ public class DocumentEntity {
 
     }
 
-    public DocumentEntity(int documentID, String documentTitle, String fileType, byte[] fileContent,
-            String fileSize) {
+    public DocumentEntity(int documentID, String documentTitle, String fileType, byte[] fileContent, String fileSize) {
         this.documentID = documentID;
         this.documentTitle = documentTitle;
         this.fileType = fileType;

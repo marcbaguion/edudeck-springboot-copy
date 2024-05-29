@@ -1,6 +1,5 @@
 package com.it332.edudeck.Entity;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,9 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 
 @Entity
@@ -45,7 +42,6 @@ public class UserEntity {
 		this.username = username;
 		this.email = email;
 		this.password = password;
-        this.email = email;
         this.isDeleted = isDeleted;
 	}
 
