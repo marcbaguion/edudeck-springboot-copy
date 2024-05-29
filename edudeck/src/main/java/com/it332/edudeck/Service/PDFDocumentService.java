@@ -1,6 +1,78 @@
+// package com.it332.edudeck.Service;
+
+// // import java.util.HashMap;
+// import java.util.Map;
+// import java.util.NoSuchElementException;
+
+// import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.stereotype.Service;
+
+// import com.it332.edudeck.Entity.DocumentEntity;
+// import com.it332.edudeck.Repository.DocumentRepository;
+
+// import java.io.IOException;
+// import java.nio.file.Files;
+// import java.nio.file.Path;
+// import java.nio.file.Paths;
+// @Service
+// public class PDFDocumentService {
+
+//     @Autowired
+//     DocumentRepository documentRepository;
+
+//     // Define a method to save the PDF content to a file and return its path
+//     public Path savePDFContentToFile(int documentID) throws IOException {
+//         DocumentEntity document = documentRepository.findById(documentID)
+//                 .orElseThrow(() -> new NoSuchElementException("Document " + documentID + " does not exist"));
+
+//         // Get the PDF content as a byte array
+//         byte[] content = document.getFileContent();
+
+//         // Define the directory where you want to save the file
+//         String directory = "/path/to/save/pdf/files";
+        
+//         // Create the directory if it doesn't exist
+//         Files.createDirectories(Paths.get(directory));
+
+//         // Generate a unique file name or use the document ID as the file name
+//         String fileName = "document_" + documentID + ".pdf";
+        
+//         // Define the path to save the file
+//         Path filePath = Paths.get(directory, fileName);
+
+//         // Write the PDF content to the file
+//         Files.write(filePath, content);
+
+//         // Return the path to the saved file
+//         return filePath;
+//     }
+
+//     public DocumentEntity highlightPDF(int documentID, Map<String, String> highlights) {
+//         DocumentEntity document = documentRepository.findById(documentID)
+//                 .orElseThrow(() -> new NoSuchElementException("Document " + documentID + " does not exist"));
+
+//         // Implement your highlighting logic here
+//         // For example, you can store the highlights in a new column in the database
+
+//         return documentRepository.save(document);
+//     }
+
+//     public byte[] getPDFContent(int userid, int documentID) {
+//         DocumentEntity document = documentRepository.findByUser_UseridAndDocumentIDAndIsDeletedFalse(userid, documentID)
+//                 .orElseThrow(() -> new NoSuchElementException("Document " + documentID + " does not exist"));
+//         return document.getFileContent();
+//     }
+
+//     public DocumentEntity getDocumentByIdAndUserId(int documentID, int userid) {
+//         // TODO Auto-generated method stub
+//         throw new UnsupportedOperationException("Unimplemented method 'getDocumentByIdAndUserId'");
+//     }    
+// }
+
+    
 package com.it332.edudeck.Service;
 
-import java.util.HashMap;
+// import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
@@ -10,38 +82,65 @@ import org.springframework.stereotype.Service;
 import com.it332.edudeck.Entity.DocumentEntity;
 import com.it332.edudeck.Repository.DocumentRepository;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 @Service
 public class PDFDocumentService {
-    
+
     @Autowired
     DocumentRepository documentRepository;
 
-    // // Method to extract text from a document
-    // public String extractTextFromDocument(int documentId) {
-    //     UploadDocumentEntity document = documentRepository.findById(documentId)
-    //         .orElseThrow(() -> new NoSuchElementException("Document " + documentId + " not found"));
+    // Define a method to save the PDF content to a file and return its path
+    public Path savePDFContentToFile(int documentID) throws IOException {
+        DocumentEntity document = documentRepository.findById(documentID)
+                .orElseThrow(() -> new NoSuchElementException("Document " + documentID + " does not exist"));
 
-    //     // Use a library like Apache PDFBox to extract text from the document content
-    //     String extractedText = PdfTextExtractor.extractText(document.getFileContent());
+        // Get the PDF content as a byte array
+        byte[] content = document.getFileContent();
 
-    //     // Update the document entity with the extracted text
-    //     document.setExtractedText(extractedText);
-    //     documentRepository.save(document);
+        // Define the directory where you want to save the file
+        String directory = "/path/to/save/pdf/files";
+        
+        // Create the directory if it doesn't exist
+        Files.createDirectories(Paths.get(directory));
 
-    //     return extractedText;
-    // }
+        // Generate a unique file name or use the document ID as the file name
+        String fileName = "document_" + documentID + ".pdf";
+        
+        // Define the path to save the file
+        Path filePath = Paths.get(directory, fileName);
 
-    // // Method to generate flashcards from extracted text
-    // public Map<String, String> generateFlashcards(String extractedText) {
-    //     // Logic to generate flashcards from extracted text
-    //     // For example, split the text into sentences and create front-back pairs
-    //     // Here's a simplified example:
-    //     String[] sentences = extractedText.split("\\.\\s*");
-    //     Map<String, String> flashcards = new HashMap<>();
-    //     for (String sentence : sentences) {
-    //         // For each sentence, use it as both front and back of the flashcard
-    //         flashcards.put(sentence, sentence);
-    //     }
-    //     return flashcards;
-    // }
+        // Write the PDF content to the file
+        Files.write(filePath, content);
+
+        // Return the path to the saved file
+        return filePath;
+    }
+
+    public DocumentEntity highlightPDF(int documentID, Map<String, String> highlights) {
+        DocumentEntity document = documentRepository.findById(documentID)
+                .orElseThrow(() -> new NoSuchElementException("Document " + documentID + " does not exist"));
+
+        // Implement your highlighting logic here
+        // For example, you can store the highlights in a new column in the database
+
+        return documentRepository.save(document);
+    }
+
+    public byte[] getPDFContent(int userid, int documentID) {
+        DocumentEntity document = documentRepository.findByUser_UseridAndDocumentIDAndIsDeletedFalse(userid, documentID)
+                .orElseThrow(() -> new NoSuchElementException("Document " + documentID + " does not exist"));
+        return document.getFileContent();
+    }
+
+    public DocumentEntity getDocumentByIdAndUserId(int documentID, int userid) {
+        return documentRepository.findByUser_UseridAndDocumentIDAndIsDeletedFalse(userid, documentID)
+                .orElseThrow(() -> new NoSuchElementException("Document " + documentID + " for user " + userid + " does not exist"));
+    }      
+    
 }
+
+    
+   

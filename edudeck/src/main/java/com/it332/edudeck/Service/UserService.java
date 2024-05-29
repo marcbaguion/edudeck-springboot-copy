@@ -79,4 +79,10 @@ public class UserService {
     public UserEntity getUserDetails(String username) {
         return urepo.findByUsernameAndIsDeletedFalse(username);
     }
+
+    // Retrieve user by ID
+    public UserEntity findUserById(int userid) {
+        return urepo.findById(userid)
+                    .orElseThrow(() -> new NoSuchElementException("User " + userid + " does not exist"));
+    }
 }
