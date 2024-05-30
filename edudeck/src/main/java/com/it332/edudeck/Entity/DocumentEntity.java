@@ -21,7 +21,9 @@ public class DocumentEntity {
     @Column(name = "docTitle")
     private String documentTitle;
     private String fileType;
+
     @Lob
+    @Column(columnDefinition = "LONGBLOB")
     private byte[] fileContent;
     private String fileSize;
     private boolean isDeleted;
