@@ -5,6 +5,7 @@ import com.google.cloud.vertexai.api.Content;
 import com.google.cloud.vertexai.api.GenerateContentResponse;
 import com.google.cloud.vertexai.api.GenerationConfig;
 import com.google.cloud.vertexai.api.HarmCategory;
+import com.google.cloud.vertexai.api.Part;
 import com.google.cloud.vertexai.api.SafetySetting;
 import com.google.cloud.vertexai.generativeai.ContentMaker;
 import com.google.cloud.vertexai.generativeai.GenerativeModel;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class GeminiFlashcardAI {
@@ -27,7 +29,7 @@ public class GeminiFlashcardAI {
     }
 
     @PostMapping("/generate-flashcards")
-    public void generateFlashcards(@RequestBody String lessonText) throws IOException {
+    public String generateFlashcards(@RequestBody String lessonText) throws IOException {
         GenerationConfig generationConfig =
                 GenerationConfig.newBuilder()
                         .setMaxOutputTokens(8192)
@@ -72,7 +74,13 @@ public class GeminiFlashcardAI {
         Content content = ContentMaker.fromMultiModalData(lessonText);
         ResponseStream<GenerateContentResponse> responseStream = model.generateContentStream(content);
 
-        // Print the response for debugging
-        responseStream.stream().forEach(System.out::println);
+        // Collect and concatenate the text parts
+        String result = responseStream.stream()
+                .flatMap(response -> response.getCandidatesList().stream())
+                .flatMap(candidate -> candidate.getContent().getPartsList().stream())
+                .map(Part::getText)
+                .collect(Collectors.joining());
+
+        return result;
     }
 }
