@@ -16,8 +16,8 @@ public class DocumentEntity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    
     private int documentID;
+    
     @Column(name = "docTitle")
     private String documentTitle;
     private String fileType;

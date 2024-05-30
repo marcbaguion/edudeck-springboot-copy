@@ -34,9 +34,21 @@ public class FlashcardDeckController {
         return flashcardDeck.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/deleteFlashcardDeck/{id}")
-    public ResponseEntity<Void> deleteFlashcardDeck(@PathVariable int id) {
-        flashcardDeckService.deleteFlashcardDeck(id);
-        return ResponseEntity.noContent().build();
-    }
+    // @GetMapping("/getDecksByUser/{userId}")
+    // public ResponseEntity<List<FlashcardDeckEntity>> getDecksByUser(@PathVariable int userId) {
+    //     List<FlashcardDeckEntity> userDecks = flashcardDeckService.getDecksByUser(userId);
+    //     return ResponseEntity.ok(userDecks);
+    // }
+
+    // U - Update a FlashcardDeck record
+	@PutMapping("/updateFlashcardDeck")
+	public FlashcardDeckEntity updateDeck(@RequestParam int deckid,@RequestBody FlashcardDeckEntity newFlashcardDeckDetails) {
+		return flashcardDeckService.updateDeck(deckid, newFlashcardDeckDetails);
+	}
+
+    //soft delete
+	@PutMapping("/deleteFlashcardDeck/{deckId}")
+	public String deleteDeck(@PathVariable int deckId) {
+	    return flashcardDeckService.deleteFlashcardDeck(deckId);
+	}
 }
