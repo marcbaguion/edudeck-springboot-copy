@@ -36,5 +36,4 @@ public interface DocumentRepository extends JpaRepository<DocumentEntity, Intege
     List<DocumentEntity> findByDocumentIDAndIsDeletedFalse(int documentID);
     List<DocumentEntity> findByUserAndIsDeletedFalse(UserEntity user);
     Optional<DocumentEntity> findByUser_UseridAndDocumentIDAndIsDeletedFalse(int userid, int documentID);
-    Optional<DocumentEntity> findByDocumentTitleAndIsDeletedFalse(String fileName);
 }

@@ -111,7 +111,6 @@ package com.it332.edudeck.Controller;
 import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ContentDisposition;
@@ -155,77 +154,88 @@ public class UploadDocumentController {
             @RequestPart("file") MultipartFile file,
             @PathVariable int userid) throws IOException {
         try {
-            // Convert JSON string to DocumentEntity
             ObjectMapper mapper = new ObjectMapper();
             DocumentEntity document = mapper.readValue(documentJson, DocumentEntity.class);
 
-            UserEntity user = userv.findUserById(userid); // Use userService to find user by ID
+            UserEntity user = userv.findUserById(userid);
             DocumentEntity savedDocument = dserv.insertDocument(document, file, user);
             return ResponseEntity.ok(savedDocument);
         } catch (MaxUploadSizeExceededException e) {
-            // Handle file size exceeded error
-            return ResponseEntity.status(413).build(); // 413 Request Entity Too Large
+            return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE).build();
         } catch (NoSuchElementException e) {
-            // Handle user not found error
-            return ResponseEntity.status(404).body(null); // 404 Not Found
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 
     @GetMapping("/files/{userid}")
     public ResponseEntity<List<DocumentEntity>> getDocumentsByUser(@PathVariable int userid) {
-        UserEntity user = userv.findUserById(userid); // Use userService to find user by ID
-        List<DocumentEntity> uploadedFiles = dserv.getDocumentsByUser(user);
-        return ResponseEntity.ok(uploadedFiles);
+        try {
+            UserEntity user = userv.findUserById(userid);
+            List<DocumentEntity> uploadedFiles = dserv.getDocumentsByUser(user);
+            return ResponseEntity.ok(uploadedFiles);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
     @PutMapping("/update/{documentID}")
     public ResponseEntity<DocumentEntity> updateDocument(@PathVariable int documentID, @RequestParam(name = "newFileName", required = false) String newFileName) {
-        DocumentEntity updatedDocument = dserv.updateDocument(documentID, newFileName);
-        return ResponseEntity.ok(updatedDocument);
+        try {
+            DocumentEntity updatedDocument = dserv.updateDocument(documentID, newFileName);
+            return ResponseEntity.ok(updatedDocument);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
     @DeleteMapping("/delete/{documentID}")
     public ResponseEntity<DocumentEntity> deleteDocument(@PathVariable int documentID) {
-        DocumentEntity softDeletedDocument = dserv.deleteDocument(documentID);
-        return ResponseEntity.ok(softDeletedDocument);
-    }
-////// added this code
-    @GetMapping("/files/pdf/{fileName}")
-    public ResponseEntity<byte[]> getFileContentByFileName(@PathVariable String fileName) {
         try {
-            byte[] fileContent = dserv.getFileContentByFileName(fileName);
-
-            // Send the file content back as the response
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_PDF); // Set the appropriate content type
-            headers.setContentDisposition(ContentDisposition.builder("inline").build()); // Set content disposition
-
-            return new ResponseEntity<>(fileContent, headers, HttpStatus.OK);
-        } catch (IOException e) {
-            // Handle IO errors
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            DocumentEntity softDeletedDocument = dserv.deleteDocument(documentID);
+            return ResponseEntity.ok(softDeletedDocument);
         } catch (NoSuchElementException e) {
-            // Handle file not found errors
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 
-    @GetMapping("/files/docx/{fileName}")
-public ResponseEntity<byte[]> getDocxFileContentByFileName(@PathVariable String fileName) {
-    try {
-        byte[] fileContent = dserv.getDocxFileContentByFileName(fileName);
+    @GetMapping("/files/content/{documentID}")
+    public ResponseEntity<byte[]> getFileContentByDocumentID(@PathVariable int documentID) {
+        try {
+            DocumentEntity document = dserv.getDocumentById(documentID);
+            byte[] fileContent = dserv.getFileContentByDocumentID(documentID);
+            HttpHeaders headers = new HttpHeaders();
 
-        // Set the appropriate headers
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-        headers.setContentDisposition(ContentDisposition.builder("inline").filename(fileName).build());
+            // Determine file type and set appropriate headers
+            switch (document.getFileType().toLowerCase()) {
+                case "pdf":
+                    headers.setContentType(MediaType.APPLICATION_PDF);
+                    break;
+                case "docx":
+                    headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+                    headers.setContentDisposition(ContentDisposition.builder("inline").filename("document.docx").build());
+                    break;
+                case "pptx":
+                    headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+                    headers.setContentDisposition(ContentDisposition.builder("inline").filename("presentation.pptx").build());
+                    break;
+                case "jpeg":
+                case "jpg":
+                    headers.setContentType(MediaType.IMAGE_JPEG);
+                    headers.setContentDisposition(ContentDisposition.builder("inline").filename("image.jpg").build());
+                    break;
+                case "png":
+                    headers.setContentType(MediaType.IMAGE_PNG);
+                    headers.setContentDisposition(ContentDisposition.builder("inline").filename("image.png").build());
+                    break;
+                default:
+                    return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).body(null);
+            }
 
-        return ResponseEntity.ok().headers(headers).body(fileContent);
-    } catch (IOException e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-    } catch (NoSuchElementException e) {
-        return ResponseEntity.notFound().build();
+            return new ResponseEntity<>(fileContent, headers, HttpStatus.OK);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
-}
-
 }

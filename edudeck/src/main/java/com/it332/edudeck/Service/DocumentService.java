@@ -213,18 +213,9 @@ public class DocumentService {
         document.setIsDeleted(true);
         return drepo.save(document);
     }
-    ///pdf
-    public byte[] getFileContentByFileName(String fileName) throws IOException {
-    DocumentEntity document = drepo.findByDocumentTitleAndIsDeletedFalse(fileName)
-            .orElseThrow(() -> new NoSuchElementException("Document " + fileName + " does not exist"));
-    return document.getFileContent();
-}
 
-public byte[] getDocxFileContentByFileName(String fileName) throws IOException {
-    DocumentEntity document = drepo.findByDocumentTitleAndIsDeletedFalse(fileName)
-            .orElseThrow(() -> new NoSuchElementException("Document " + fileName + " does not exist"));
-    return document.getFileContent();
-}
-
-
+    public byte[] getFileContentByDocumentID(int documentID) throws IOException {
+        DocumentEntity document = getDocumentById(documentID);
+        return document.getFileContent();
+    }
 }
