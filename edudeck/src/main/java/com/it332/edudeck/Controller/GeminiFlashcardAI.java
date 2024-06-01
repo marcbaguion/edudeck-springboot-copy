@@ -1,5 +1,7 @@
 package com.it332.edudeck.Controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.cloud.vertexai.VertexAI;
 import com.google.cloud.vertexai.api.Content;
 import com.google.cloud.vertexai.api.GenerateContentResponse;
@@ -10,6 +12,12 @@ import com.google.cloud.vertexai.api.SafetySetting;
 import com.google.cloud.vertexai.generativeai.ContentMaker;
 import com.google.cloud.vertexai.generativeai.GenerativeModel;
 import com.google.cloud.vertexai.generativeai.ResponseStream;
+import com.it332.edudeck.Entity.FlashcardDeckEntity;
+import com.it332.edudeck.Entity.FlashcardEntity;
+import com.it332.edudeck.Repository.FlashcardDeckRepository;
+import com.it332.edudeck.Repository.FlashcardRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,12 +26,21 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Iterator;
 
 @RestController
 public class GeminiFlashcardAI {
 
+    @Autowired
+    private FlashcardDeckRepository flashcardDeckRepository;
+
+    @Autowired
+    private FlashcardRepository flashcardRepository;
+
     @PostMapping("/generate-flashcards")
-    public String generateFlashcards(@RequestBody String lessonText) {
+    public String generateFlashcards(@RequestBody String lessonText, @RequestParam int deckId) {
         VertexAI vertexAi = null;
         try {
             vertexAi = new VertexAI("savvy-depot-423506-j9", "us-central1");
@@ -81,8 +98,11 @@ public class GeminiFlashcardAI {
 
             // Remove enclosing backticks
             result = result.replaceAll("```json|```", "").trim();
-            
-            return result;
+
+            // Save the flashcards to the database
+            saveFlashcards(result, deckId);
+
+            return "Flashcards generated and saved successfully.";
         } catch (IOException e) {
             e.printStackTrace();
             return "Error occurred: " + e.getMessage();
@@ -90,6 +110,23 @@ public class GeminiFlashcardAI {
             if (vertexAi != null) {
                 vertexAi.close();
             }
+        }
+    }
+
+    private void saveFlashcards(String jsonResponse, int deckId) throws IOException {
+        FlashcardDeckEntity flashcardDeck = flashcardDeckRepository.findById(deckId)
+                .orElseThrow(() -> new RuntimeException("Deck not found"));
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode flashcardsNode = objectMapper.readTree(jsonResponse);
+
+        for (Iterator<JsonNode> it = flashcardsNode.elements(); it.hasNext(); ) {
+            JsonNode flashcardNode = it.next();
+            String question = flashcardNode.get("question").asText();
+            String answer = flashcardNode.get("answer").asText();
+
+            FlashcardEntity flashcard = new FlashcardEntity(question, answer, flashcardDeck);
+            flashcardRepository.save(flashcard);
         }
     }
 }
