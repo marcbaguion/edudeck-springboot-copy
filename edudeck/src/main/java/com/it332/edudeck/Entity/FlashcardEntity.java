@@ -10,6 +10,8 @@ import jakarta.persistence.Table;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name="tblflashcard")
 public class FlashcardEntity {
@@ -26,6 +28,7 @@ public class FlashcardEntity {
 
     @ManyToOne
     @JoinColumn(name = "deck_id", nullable = false)
+    @JsonBackReference
     private FlashcardDeckEntity flashcardDeck;
 
     public FlashcardEntity() {}

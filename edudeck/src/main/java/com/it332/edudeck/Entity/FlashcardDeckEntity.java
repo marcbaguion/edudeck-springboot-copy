@@ -14,6 +14,8 @@ import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name="tbldeck")
 public class FlashcardDeckEntity {
@@ -33,6 +35,7 @@ public class FlashcardDeckEntity {
     private DocumentEntity document;
 
     @OneToMany(mappedBy = "flashcardDeck", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private Set<FlashcardEntity> flashcards;
 
     @OneToOne
