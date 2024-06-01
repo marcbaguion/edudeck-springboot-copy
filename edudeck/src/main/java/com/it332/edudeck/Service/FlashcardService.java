@@ -25,6 +25,10 @@ public class FlashcardService {
         return flashcardRepository.findAll();
     }
 
+    public List<FlashcardEntity> getAllFlashcardsByDeckId(int deckId) {
+        return flashcardRepository.findByFlashcardDeck_deckId(deckId);
+    }
+
     public Optional<FlashcardEntity> getFlashcardById(int id) {
         return flashcardRepository.findById(id);
     }

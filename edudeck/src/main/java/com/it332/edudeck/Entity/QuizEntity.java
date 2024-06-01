@@ -3,6 +3,7 @@ package com.it332.edudeck.Entity;
 import java.util.Date;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -34,7 +35,7 @@ public class QuizEntity {
     @JoinColumn(name = "deck_id", nullable = false)
     private FlashcardDeckEntity deck;
 
-    @OneToMany(mappedBy = "quiz")
+    @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL)
     private List<QuizItemEntity> quizItems;
 
     public QuizEntity() {

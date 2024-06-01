@@ -23,6 +23,11 @@ public class FlashcardController {
         return ResponseEntity.ok(createdFlashcard);
     }
 
+    @GetMapping("/deck/{deckId}")
+    public List<FlashcardEntity> getAllFlashcardsByDeckId(@PathVariable int deckId) {
+        return flashcardService.getAllFlashcardsByDeckId(deckId);
+    }
+
     @GetMapping("/getAllFlashcards")
     public ResponseEntity<List<FlashcardEntity>> getAllFlashcards() {
         return ResponseEntity.ok(flashcardService.getAllFlashcards());
@@ -33,6 +38,8 @@ public class FlashcardController {
         Optional<FlashcardEntity> flashcard = flashcardService.getFlashcardById(id);
         return flashcard.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+    
 
     @DeleteMapping("/deleteFlashcard/{id}")
     public ResponseEntity<Void> deleteFlashcard(@PathVariable int id) {
