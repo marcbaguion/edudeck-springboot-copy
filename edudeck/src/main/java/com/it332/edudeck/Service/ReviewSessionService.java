@@ -7,28 +7,40 @@ import com.it332.edudeck.Entity.ReviewSessionEntity;
 import com.it332.edudeck.Repository.ReviewSessionRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ReviewSessionService {
 
     @Autowired
-    private ReviewSessionRepository flashcardReviewSessionRepository;
-
-    public ReviewSessionEntity createReviewSession(ReviewSessionEntity flashcardReviewSession) {
-        return flashcardReviewSessionRepository.save(flashcardReviewSession);
-    }
+    private ReviewSessionRepository reviewSessionRepository;
 
     public List<ReviewSessionEntity> getAllReviewSessions() {
-        return flashcardReviewSessionRepository.findAll();
+        return reviewSessionRepository.findAll();
     }
 
-    public Optional<ReviewSessionEntity> getReviewSessionById(int id) {
-        return flashcardReviewSessionRepository.findById(id);
+    public ReviewSessionEntity getReviewSessionById(int id) {
+        return reviewSessionRepository.findById(id).orElse(null);
+    }
+
+    public ReviewSessionEntity createReviewSession(ReviewSessionEntity reviewSession) {
+        return reviewSessionRepository.save(reviewSession);
+    }
+
+    public ReviewSessionEntity updateReviewSession(int id, ReviewSessionEntity reviewSessionDetails) {
+        ReviewSessionEntity reviewSession = reviewSessionRepository.findById(id).orElse(null);
+        if (reviewSession != null) {
+            reviewSession.setStartTime(reviewSessionDetails.getStartTime());
+            reviewSession.setEndTime(reviewSessionDetails.getEndTime());
+            reviewSession.setUser(reviewSessionDetails.getUser());
+            reviewSession.setFlashcardDeck(reviewSessionDetails.getFlashcardDeck());
+            reviewSession.setCurrentFlashcard(reviewSessionDetails.getCurrentFlashcard());
+            return reviewSessionRepository.save(reviewSession);
+        }
+        return null;
     }
 
     public void deleteReviewSession(int id) {
-        flashcardReviewSessionRepository.deleteById(id);
+        reviewSessionRepository.deleteById(id);
     }
 }
 
