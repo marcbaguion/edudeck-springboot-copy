@@ -45,6 +45,9 @@ public class UserEntity {
 	@OneToMany(mappedBy = "user")
     private List<DocumentEntity> documents;
 
+	@OneToMany(mappedBy = "user")
+    private List<FlashcardDeckEntity> decks;
+
 	public UserEntity() {
 		super();
 	}

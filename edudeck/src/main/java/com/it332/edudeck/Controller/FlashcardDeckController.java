@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.it332.edudeck.Entity.FlashcardDeckEntity;
 import com.it332.edudeck.Service.FlashcardDeckService;
+import com.it332.edudeck.Service.UserService;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,9 +18,12 @@ public class FlashcardDeckController {
     @Autowired
     private FlashcardDeckService flashcardDeckService;
 
+    @Autowired
+    private UserService userService;
+
     @PostMapping("/createFlashcardDeck")
     public ResponseEntity<FlashcardDeckEntity> createFlashcardDeck(@RequestBody FlashcardDeckEntity flashcardDeck) {
-        FlashcardDeckEntity createdDeck = flashcardDeckService.createFlashcardDeck(flashcardDeck.getTitle(), flashcardDeck.getUser(), flashcardDeck.getDocumentToFlashcardAI());
+        FlashcardDeckEntity createdDeck = flashcardDeckService.createFlashcardDeck(flashcardDeck.getTitle(), flashcardDeck.getUser());
         return ResponseEntity.ok(createdDeck);
     }
 
@@ -34,11 +38,10 @@ public class FlashcardDeckController {
         return flashcardDeck.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // @GetMapping("/getDecksByUser/{userId}")
-    // public ResponseEntity<List<FlashcardDeckEntity>> getDecksByUser(@PathVariable int userId) {
-    //     List<FlashcardDeckEntity> userDecks = flashcardDeckService.getDecksByUser(userId);
-    //     return ResponseEntity.ok(userDecks);
-    // }
+    @GetMapping("/getDecksByUser/{userId}")
+    public List<FlashcardDeckEntity> getDecksByUser(@PathVariable int userId) {
+        return flashcardDeckService.getDecksByUser(userId);
+    }
 
     // U - Update a FlashcardDeck record
 	@PutMapping("/updateFlashcardDeck")

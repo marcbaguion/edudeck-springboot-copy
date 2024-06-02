@@ -3,10 +3,10 @@ package com.it332.edudeck.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.it332.edudeck.Entity.DocumentToFlashcardAIEntity;
 import com.it332.edudeck.Entity.FlashcardDeckEntity;
 import com.it332.edudeck.Entity.UserEntity;
 import com.it332.edudeck.Repository.FlashcardDeckRepository;
+import com.it332.edudeck.Repository.UserRepository;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -19,8 +19,11 @@ public class FlashcardDeckService {
     @Autowired
     private FlashcardDeckRepository flashcardDeckRepository;
 
-    public FlashcardDeckEntity createFlashcardDeck(String title, UserEntity user, DocumentToFlashcardAIEntity documentToFlashcardAI) {
-        FlashcardDeckEntity flashcardDeck = new FlashcardDeckEntity(title, user, documentToFlashcardAI);
+    @Autowired
+    private UserRepository userRepository;
+
+    public FlashcardDeckEntity createFlashcardDeck(String title, UserEntity user) {
+        FlashcardDeckEntity flashcardDeck = new FlashcardDeckEntity(title, user);
         return flashcardDeckRepository.save(flashcardDeck);
     }
 
@@ -30,9 +33,13 @@ public class FlashcardDeckService {
 	        .collect(Collectors.toList());
     }
 
-    // public List<FlashcardDeckEntity> getDecksByUser(int userId) {
-    //     return flashcardDeckRepository.findByUserUserIdAndIsDeletedFalse(userId);
-    // }
+    public List<FlashcardDeckEntity> getDecksByUser(int userId) {
+        UserEntity user = userRepository.findById(userId).orElse(null);
+        if (user == null) {
+            return null;
+        }
+        return flashcardDeckRepository.findByUserAndIsDeletedFalse(user);
+    }
 
     public Optional<FlashcardDeckEntity> getFlashcardDeckById(int id) {
         return flashcardDeckRepository.findById(id);

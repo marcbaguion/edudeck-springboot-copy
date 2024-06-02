@@ -38,19 +38,15 @@ public class FlashcardDeckEntity {
     @JsonManagedReference
     private Set<FlashcardEntity> flashcards;
 
-    @OneToOne
-    @JoinColumn(name = "ai_id")
-    private DocumentToFlashcardAIEntity documentToFlashcardAI;
 
     private LocalDateTime dateCreated = LocalDateTime.now();
     private boolean isDeleted = false;
     
     public FlashcardDeckEntity() {}
 
-    public FlashcardDeckEntity(String title, UserEntity user, DocumentToFlashcardAIEntity documentToFlashcardAI) {
+    public FlashcardDeckEntity(String title, UserEntity user) {
         this.title = title;
         this.user = user;
-        this.documentToFlashcardAI = documentToFlashcardAI;
     }
 
     public int getDeckId() {
@@ -83,14 +79,6 @@ public class FlashcardDeckEntity {
 
     public void setFlashcards(Set<FlashcardEntity> flashcards) {
         this.flashcards = flashcards;
-    }
-
-    public DocumentToFlashcardAIEntity getDocumentToFlashcardAI() {
-        return documentToFlashcardAI;
-    }
-
-    public void setDocumentToFlashcardAI(DocumentToFlashcardAIEntity documentToFlashcardAI) {
-        this.documentToFlashcardAI = documentToFlashcardAI;
     }
 
     public LocalDateTime getDateCreated() {

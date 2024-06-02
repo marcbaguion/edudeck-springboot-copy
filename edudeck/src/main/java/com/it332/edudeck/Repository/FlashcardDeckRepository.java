@@ -5,7 +5,8 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.it332.edudeck.Entity.FlashcardDeckEntity;
+import com.it332.edudeck.Entity.UserEntity;
 
 public interface FlashcardDeckRepository extends JpaRepository<FlashcardDeckEntity, Integer> {
-    //List<FlashcardDeckEntity> findByUserUserIdAndIsDeletedFalse(int userId);
+    List<FlashcardDeckEntity> findByUserAndIsDeletedFalse(UserEntity user);
 }
