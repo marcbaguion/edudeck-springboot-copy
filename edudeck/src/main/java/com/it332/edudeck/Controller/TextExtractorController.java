@@ -49,7 +49,12 @@ public class TextExtractorController {
                     return ResponseEntity.badRequest().body("Unsupported file type: " + fileType);
             }
 
-            return ResponseEntity.ok(extractedText);
+            // Enclose the extracted text in triple single quotes
+            String enclosedText = "'";
+            enclosedText += extractedText.replace("'", "\\'");
+            enclosedText += "'";
+
+            return ResponseEntity.ok(enclosedText);
         } catch (NoSuchElementException e) {
             return ResponseEntity.notFound().build();
         } catch (IOException e) {

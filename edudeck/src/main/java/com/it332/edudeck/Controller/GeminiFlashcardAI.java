@@ -39,8 +39,8 @@ public class GeminiFlashcardAI {
     @Autowired
     private FlashcardRepository flashcardRepository;
 
-    @PostMapping("/generate-flashcards")
-    public String generateFlashcards(@RequestBody String lessonText, @RequestParam int deckId) {
+    @PostMapping("/generate-flashcards/{deckId}")
+    public String generateFlashcards(@RequestBody String lessonText, @PathVariable int deckId) {
         VertexAI vertexAi = null;
         try {
             vertexAi = new VertexAI("savvy-depot-423506-j9", "us-central1");
