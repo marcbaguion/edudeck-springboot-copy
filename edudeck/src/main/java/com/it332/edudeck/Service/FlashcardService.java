@@ -3,6 +3,7 @@ package com.it332.edudeck.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.it332.edudeck.ResourceNotFoundException;
 import com.it332.edudeck.Entity.FlashcardDeckEntity;
 import com.it332.edudeck.Entity.FlashcardEntity;
 import com.it332.edudeck.Repository.FlashcardRepository;
@@ -21,6 +22,14 @@ public class FlashcardService {
         return flashcardRepository.save(flashcard);
     }
 
+    public FlashcardEntity updateFlashcard(int id, String question, String answer) {
+        FlashcardEntity flashcard = flashcardRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Flashcard not found"));
+        flashcard.setQuestion(question);
+        flashcard.setAnswer(answer);
+        return flashcardRepository.save(flashcard);
+    }
+     
     public List<FlashcardEntity> getAllFlashcards() {
         return flashcardRepository.findAll();
     }

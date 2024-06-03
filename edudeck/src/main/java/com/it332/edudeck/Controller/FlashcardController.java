@@ -23,6 +23,12 @@ public class FlashcardController {
         return ResponseEntity.ok(createdFlashcard);
     }
 
+    @PutMapping("/editFlashcard/{id}")
+    public ResponseEntity<FlashcardEntity> updateFlashcard(@PathVariable int id, @RequestBody FlashcardEntity flashcard) {
+        FlashcardEntity updatedFlashcard = flashcardService.updateFlashcard(id, flashcard.getQuestion(), flashcard.getAnswer());
+        return ResponseEntity.ok(updatedFlashcard);
+    }
+
     @GetMapping("/deck/{deckId}")
     public List<FlashcardEntity> getAllFlashcardsByDeckId(@PathVariable int deckId) {
         return flashcardService.getAllFlashcardsByDeckId(deckId);
