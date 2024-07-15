@@ -140,7 +140,7 @@ import com.it332.edudeck.Service.UserService;
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/document")
-public class UploadDocumentController {
+public class DocumentController {
 
     @Autowired
     private DocumentService dserv;
