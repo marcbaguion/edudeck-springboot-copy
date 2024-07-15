@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.it332.edudeck.Entity.UserEntity;
+import com.it332.edudeck.Entity.User;
 import com.it332.edudeck.Repository.UserRepository;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -20,7 +20,7 @@ public class UserService {
     UserRepository urepo;
 	
 	// C
-    public UserEntity insertUser(UserEntity user){
+    public User insertUser(User user){
         String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
         user.setPassword(hashedPassword);
         user.setCreationDate(LocalDate.now()); // Set the current date as creation date
@@ -28,13 +28,13 @@ public class UserService {
     }
 
     //R -Read
-    public List<UserEntity> getAllUser(){
+    public List<User> getAllUser(){
         return urepo.findAll().stream().filter(user -> !user.isDeleted()).collect(Collectors.toList());
     }
 
     //U
-    public UserEntity updateUser(int userid, UserEntity newUserDetails){
-        UserEntity user = urepo.findById(userid)
+    public User updateUser(int userid, User newUserDetails){
+        User user = urepo.findById(userid)
                 .orElseThrow(() -> new NoSuchElementException("User " + userid + " does not exist"));
 
         user.setUsername(newUserDetails.getUsername());
@@ -52,25 +52,25 @@ public class UserService {
     }
 
     public void updateBio(int userid, String newBio) {
-        UserEntity user = urepo.findById(userid).orElseThrow(() -> new NoSuchElementException("User " + userid + " does not exist"));
+        User user = urepo.findById(userid).orElseThrow(() -> new NoSuchElementException("User " + userid + " does not exist"));
         user.setBio(newBio);
         urepo.save(user);
     }
 
     public void updateName(int userid, String newName) {
-        UserEntity user = urepo.findById(userid).orElseThrow(() -> new NoSuchElementException("User " + userid + " does not exist"));
+        User user = urepo.findById(userid).orElseThrow(() -> new NoSuchElementException("User " + userid + " does not exist"));
         user.setUsername(newName);
         urepo.save(user);
     }
 
     public void updateMobileNumber(int userid, String newMobileNumber) {
-        UserEntity user = urepo.findById(userid).orElseThrow(() -> new NoSuchElementException("User " + userid + " does not exist"));
+        User user = urepo.findById(userid).orElseThrow(() -> new NoSuchElementException("User " + userid + " does not exist"));
         user.setMobileNumber(newMobileNumber);
         urepo.save(user);
     }
 
     public void changePassword(int userid, String newPassword) {
-        UserEntity user = urepo.findById(userid).orElseThrow(() -> new NoSuchElementException("User " + userid + " does not exist"));
+        User user = urepo.findById(userid).orElseThrow(() -> new NoSuchElementException("User " + userid + " does not exist"));
         String hashedPassword = BCrypt.hashpw(newPassword, BCrypt.gensalt());
         user.setPassword(hashedPassword);
         urepo.save(user);
@@ -80,9 +80,9 @@ public class UserService {
     public String deleteUser(int userid){
         String msg = "";
 
-        Optional<UserEntity> userOptional = urepo.findById(userid);
+        Optional<User> userOptional = urepo.findById(userid);
         if (userOptional.isPresent()) {
-            UserEntity user = userOptional.get();
+            User user = userOptional.get();
             user.setDeleted(true); // Set isDeleted to true instead of deleting the record
             urepo.save(user); // Save the updated user record
             msg = "User " + userid + " is successfully deleted";
@@ -93,31 +93,31 @@ public class UserService {
     }
 
 	public boolean authenticateUser(String username, String rawPassword) {
-        UserEntity user = urepo.findByUsernameAndIsDeletedFalse(username);
+        User user = urepo.findByUsernameAndIsDeletedFalse(username);
         if (user != null) {
             return BCrypt.checkpw(rawPassword, user.getPassword());
         }
         return false;
     }
 
-    public UserEntity getUserDetails(String username) {
+    public User getUserDetails(String username) {
         return urepo.findByUsernameAndIsDeletedFalse(username);
     }
 
     // Retrieve user by ID
-    public UserEntity findUserById(int userid) {
+    public User findUserById(int userid) {
         return urepo.findById(userid)
                     .orElseThrow(() -> new NoSuchElementException("User " + userid + " does not exist"));
     }
 
     public void updateProfilePicture(int userid, byte[] newProfilePicture) {
-        UserEntity user = findUserById(userid);
+        User user = findUserById(userid);
         user.setProfilePicture(newProfilePicture);
         urepo.save(user);
     }
 
     public void deleteProfilePicture(int userid) {
-        UserEntity user = findUserById(userid);
+        User user = findUserById(userid);
         user.setProfilePicture(null); // Or any logic to remove the profile picture
         urepo.save(user);
     }

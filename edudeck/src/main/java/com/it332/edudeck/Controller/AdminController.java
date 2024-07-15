@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.it332.edudeck.Entity.AdminEntity;
+import com.it332.edudeck.Entity.Admin;
 import com.it332.edudeck.Service.AdminService;
 
 import java.util.List;
@@ -17,19 +17,19 @@ public class AdminController {
     private AdminService adminService;
 
     @PostMapping("/create")
-    public ResponseEntity<AdminEntity> createAdmin(@RequestBody AdminEntity admin) {
-        AdminEntity createdAdmin = adminService.createAdmin(admin);
+    public ResponseEntity<Admin> createAdmin(@RequestBody Admin admin) {
+        Admin createdAdmin = adminService.createAdmin(admin);
         return ResponseEntity.ok(createdAdmin);
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<AdminEntity>> getAllAdmins() {
+    public ResponseEntity<List<Admin>> getAllAdmins() {
         return ResponseEntity.ok(adminService.getAllAdmins());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AdminEntity> getAdminById(@PathVariable int id) {
-        AdminEntity admin = adminService.getAdminById(id)
+    public ResponseEntity<Admin> getAdminById(@PathVariable int id) {
+        Admin admin = adminService.getAdminById(id)
                 .orElseThrow(() -> new RuntimeException("Admin not found with id: " + id));
         return ResponseEntity.ok(admin);
     }

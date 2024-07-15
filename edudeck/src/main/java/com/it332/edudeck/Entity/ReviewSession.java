@@ -13,7 +13,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name="tblreviewsession")
-public class ReviewSessionEntity {
+public class ReviewSession {
 
     @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,21 +24,21 @@ public class ReviewSessionEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity user;
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "deck_id", nullable = false)
-    private FlashcardDeckEntity flashcardDeck;
+    private FlashcardDeck flashcardDeck;
 
     @OneToOne
     @JoinColumn(name = "current_flashcard_id")
-    private FlashcardEntity currentFlashcard;
+    private Flashcard currentFlashcard;
 
-    public ReviewSessionEntity() {
+    public ReviewSession() {
     }
 
-    public ReviewSessionEntity(int reviewSessionId, LocalDateTime startTime, LocalDateTime endTime,
-            FlashcardDeckEntity flashcardDeck) {
+    public ReviewSession(int reviewSessionId, LocalDateTime startTime, LocalDateTime endTime,
+                         FlashcardDeck flashcardDeck) {
         this.reviewSessionId = reviewSessionId;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -69,27 +69,27 @@ public class ReviewSessionEntity {
         this.endTime = endTime;
     }
 
-    public FlashcardDeckEntity getFlashcardDeck() {
+    public FlashcardDeck getFlashcardDeck() {
         return flashcardDeck;
     }
 
-    public void setFlashcardDeck(FlashcardDeckEntity flashcardDeck) {
+    public void setFlashcardDeck(FlashcardDeck flashcardDeck) {
         this.flashcardDeck = flashcardDeck;
     }
 
-    public UserEntity getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(UserEntity user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
-    public FlashcardEntity getCurrentFlashcard() {
+    public Flashcard getCurrentFlashcard() {
         return currentFlashcard;
     }
 
-    public void setCurrentFlashcard(FlashcardEntity currentFlashcard) {
+    public void setCurrentFlashcard(Flashcard currentFlashcard) {
         this.currentFlashcard = currentFlashcard;
     }
 

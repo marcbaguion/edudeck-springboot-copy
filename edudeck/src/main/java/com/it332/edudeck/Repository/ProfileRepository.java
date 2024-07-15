@@ -2,9 +2,9 @@ package com.it332.edudeck.Repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.it332.edudeck.Entity.ProfileEntity;
-import com.it332.edudeck.Entity.UserEntity;
+import com.it332.edudeck.Entity.Profile;
+import com.it332.edudeck.Entity.User;
 
-public interface ProfileRepository extends JpaRepository<ProfileEntity, Integer>{
-    ProfileEntity findByUser(UserEntity user);
+public interface ProfileRepository extends JpaRepository<Profile, Integer>{
+    Profile findByUser(User user);
 }

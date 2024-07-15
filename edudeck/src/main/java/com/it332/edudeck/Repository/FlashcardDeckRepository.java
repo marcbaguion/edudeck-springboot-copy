@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.it332.edudeck.Entity.FlashcardDeckEntity;
-import com.it332.edudeck.Entity.UserEntity;
+import com.it332.edudeck.Entity.FlashcardDeck;
+import com.it332.edudeck.Entity.User;
 
-public interface FlashcardDeckRepository extends JpaRepository<FlashcardDeckEntity, Integer> {
-    List<FlashcardDeckEntity> findByUserAndIsDeletedFalse(UserEntity user);
+public interface FlashcardDeckRepository extends JpaRepository<FlashcardDeck, Integer> {
+    List<FlashcardDeck> findByUserAndIsDeletedFalse(User user);
 }

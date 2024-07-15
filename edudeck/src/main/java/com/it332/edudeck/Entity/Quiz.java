@@ -3,12 +3,10 @@ package com.it332.edudeck.Entity;
 import java.util.Date;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -19,7 +17,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name="tblquiz")
-public class QuizEntity {
+public class Quiz {
 
     @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,18 +35,18 @@ public class QuizEntity {
 
     @ManyToOne
     @JoinColumn(name = "deck_id", nullable = false)
-    private FlashcardDeckEntity deck;
+    private FlashcardDeck deck;
 
     @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL)
     @JsonManagedReference // Manage serialization
-    private List<QuizItemEntity> quizItems;
+    private List<QuizItem> quizItems;
 
-    public QuizEntity() {
+    public Quiz() {
     }
 
-    public QuizEntity(int quizId, String title, int totalQuestions, float targetScorePercentage, int passingScore,
-            int score, float scorePercentage, Date dateCreated, Date dateLastTaken, boolean isDeleted,
-            FlashcardDeckEntity deck, List<QuizItemEntity> quizItems) {
+    public Quiz(int quizId, String title, int totalQuestions, float targetScorePercentage, int passingScore,
+                int score, float scorePercentage, Date dateCreated, Date dateLastTaken, boolean isDeleted,
+                FlashcardDeck deck, List<QuizItem> quizItems) {
         this.quizId = quizId;
         this.title = title;
         this.totalQuestions = totalQuestions;
@@ -143,19 +141,19 @@ public class QuizEntity {
         this.isDeleted = isDeleted;
     }
 
-    public FlashcardDeckEntity getDeck() {
+    public FlashcardDeck getDeck() {
         return deck;
     }
 
-    public void setDeck(FlashcardDeckEntity deck) {
+    public void setDeck(FlashcardDeck deck) {
         this.deck = deck;
     }
 
-    public List<QuizItemEntity> getQuizItems() {
+    public List<QuizItem> getQuizItems() {
         return quizItems;
     }
 
-    public void setQuizItems(List<QuizItemEntity> quizItems) {
+    public void setQuizItems(List<QuizItem> quizItems) {
         this.quizItems = quizItems;
     }
 

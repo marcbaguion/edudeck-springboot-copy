@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.it332.edudeck.Entity.ProfileEntity;
-import com.it332.edudeck.Entity.UserEntity;
+import com.it332.edudeck.Entity.Profile;
+import com.it332.edudeck.Entity.User;
 import com.it332.edudeck.Repository.ProfileRepository;
 import com.it332.edudeck.Repository.UserRepository;
 import com.it332.edudeck.Service.ProfileService;
@@ -27,7 +27,7 @@ public class ProfileController {
     private ProfileRepository prepo;
 
     @PostMapping("/uploadProfilePicture")
-    public ProfileEntity uploadProfilePicture(@RequestParam("userno") int userno, @RequestParam("file") MultipartFile file) {
+    public Profile uploadProfilePicture(@RequestParam("userno") int userno, @RequestParam("file") MultipartFile file) {
     byte[] profilePicture = null;
     try {
         profilePicture = file.getBytes();
@@ -39,8 +39,8 @@ public class ProfileController {
 
     @GetMapping("/getProfilePicture/{userno}")
     public byte[] getProfilePicture(@PathVariable int userno) {
-        UserEntity user = urepo.findById(userno).orElse(null);
-        ProfileEntity profile = prepo.findByUser(user);
+        User user = urepo.findById(userno).orElse(null);
+        Profile profile = prepo.findByUser(user);
         return profile != null ? profile.getProfilePicture() : null;
     }
 }

@@ -156,8 +156,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.it332.edudeck.Entity.DocumentEntity;
-import com.it332.edudeck.Entity.UserEntity;
+import com.it332.edudeck.Entity.Document;
+import com.it332.edudeck.Entity.User;
 import com.it332.edudeck.Repository.DocumentRepository;
 
 @Service
@@ -179,7 +179,7 @@ public class DocumentService {
         return String.format("%.2f %s", fileSize, units[unitIndex]);
     }
 
-    public DocumentEntity insertDocument(DocumentEntity document, MultipartFile file, UserEntity user) throws IOException {
+    public Document insertDocument(Document document, MultipartFile file, User user) throws IOException {
         document.setFileContent(file.getBytes());
         document.setDocumentTitle(file.getOriginalFilename());
         document.setFileSize(formatFileSize(file.getSize()));
@@ -187,35 +187,35 @@ public class DocumentService {
         return drepo.save(document);
     }
 
-    public List<DocumentEntity> getAllDocuments() {
+    public List<Document> getAllDocuments() {
         return drepo.findByIsDeletedFalse();
     }
 
-    public List<DocumentEntity> getDocumentsByUser(UserEntity user) {
+    public List<Document> getDocumentsByUser(User user) {
         return drepo.findByUserAndIsDeletedFalse(user);
     }
 
-    public DocumentEntity getDocumentById(int documentID) {
+    public Document getDocumentById(int documentID) {
         return drepo.findById(documentID)
                 .orElseThrow(() -> new NoSuchElementException("Document " + documentID + " does not exist"));
     }
 
-    public DocumentEntity updateDocument(int documentID, String newFileName) {
-        DocumentEntity document = getDocumentById(documentID);
+    public Document updateDocument(int documentID, String newFileName) {
+        Document document = getDocumentById(documentID);
         if (newFileName != null && !newFileName.isEmpty()) {
             document.setDocumentTitle(newFileName);
         }
         return drepo.save(document);
     }
 
-    public DocumentEntity deleteDocument(int documentID) {
-        DocumentEntity document = getDocumentById(documentID);
+    public Document deleteDocument(int documentID) {
+        Document document = getDocumentById(documentID);
         document.setIsDeleted(true);
         return drepo.save(document);
     }
 
     public byte[] getFileContentByDocumentID(int documentID) throws IOException {
-        DocumentEntity document = getDocumentById(documentID);
+        Document document = getDocumentById(documentID);
         return document.getFileContent();
     }
 }

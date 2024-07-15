@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name="tbladmin")
-public class AdminEntity {
+public class Admin {
 
     @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,12 +29,12 @@ public class AdminEntity {
     private LocalDateTime dateCreated = LocalDateTime.now();
 	private boolean isDeleted = false;
     
-    public AdminEntity() {
+    public Admin() {
     }
 
     
 
-    public AdminEntity(String username, String email, String password) {
+    public Admin(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;

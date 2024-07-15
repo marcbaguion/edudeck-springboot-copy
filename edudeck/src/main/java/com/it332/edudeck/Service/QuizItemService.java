@@ -3,7 +3,7 @@ package com.it332.edudeck.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.it332.edudeck.Entity.QuizItemEntity;
+import com.it332.edudeck.Entity.QuizItem;
 import com.it332.edudeck.Repository.QuizItemRepository;
 
 import java.util.List;
@@ -15,22 +15,22 @@ public class QuizItemService {
     @Autowired
     private QuizItemRepository quizItemRepository;
 
-    public QuizItemEntity createQuizItem(QuizItemEntity quizItem) {
+    public QuizItem createQuizItem(QuizItem quizItem) {
         return quizItemRepository.save(quizItem);
     }
 
-    public List<QuizItemEntity> getAllQuizItems() {
+    public List<QuizItem> getAllQuizItems() {
         return quizItemRepository.findAll();
     }
 
-    public Optional<QuizItemEntity> getQuizItemById(int id) {
+    public Optional<QuizItem> getQuizItemById(int id) {
         return quizItemRepository.findById(id);
     }
 
     public boolean softDeleteQuizItem(int id) {
-        Optional<QuizItemEntity> quizItemOptional = quizItemRepository.findById(id);
+        Optional<QuizItem> quizItemOptional = quizItemRepository.findById(id);
         if (quizItemOptional.isPresent()) {
-            QuizItemEntity quizItem = quizItemOptional.get();
+            QuizItem quizItem = quizItemOptional.get();
             quizItem.setDeleted(true);
             quizItemRepository.save(quizItem);
             return true;

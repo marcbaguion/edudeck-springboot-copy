@@ -13,7 +13,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name="tblquizsession")
-public class QuizSessionEntity {
+public class QuizSession {
 
     @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,21 +25,21 @@ public class QuizSessionEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity user;
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "quiz_id", nullable = false)
-    private QuizEntity quiz;
+    private Quiz quiz;
 
     @OneToOne
     @JoinColumn(name = "current_quiz_item_id")
-    private QuizItemEntity currentQuizItem;
+    private QuizItem currentQuizItem;
 
-    public QuizSessionEntity() {
+    public QuizSession() {
     }
 
-    public QuizSessionEntity(int quizSessionId, LocalDateTime startTime, LocalDateTime endTime, UserEntity user,
-            QuizEntity quiz, QuizItemEntity currentQuizItem) {
+    public QuizSession(int quizSessionId, LocalDateTime startTime, LocalDateTime endTime, User user,
+                       Quiz quiz, QuizItem currentQuizItem) {
         this.quizSessionId = quizSessionId;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -72,27 +72,27 @@ public class QuizSessionEntity {
         this.endTime = endTime;
     }
 
-    public UserEntity getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(UserEntity user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
-    public QuizEntity getQuiz() {
+    public Quiz getQuiz() {
         return quiz;
     }
 
-    public void setQuiz(QuizEntity quiz) {
+    public void setQuiz(Quiz quiz) {
         this.quiz = quiz;
     }
 
-    public QuizItemEntity getCurrentQuizItem() {
+    public QuizItem getCurrentQuizItem() {
         return currentQuizItem;
     }
 
-    public void setCurrentQuizItem(QuizItemEntity currentQuizItem) {
+    public void setCurrentQuizItem(QuizItem currentQuizItem) {
         this.currentQuizItem = currentQuizItem;
     }
 

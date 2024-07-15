@@ -132,8 +132,8 @@ import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.it332.edudeck.Entity.DocumentEntity;
-import com.it332.edudeck.Entity.UserEntity;
+import com.it332.edudeck.Entity.Document;
+import com.it332.edudeck.Entity.User;
 import com.it332.edudeck.Service.DocumentService;
 import com.it332.edudeck.Service.UserService;
 
@@ -149,16 +149,16 @@ public class UploadDocumentController {
     private UserService userv;
 
     @PostMapping("/upload/{userid}")
-    public ResponseEntity<DocumentEntity> insertDocument(
+    public ResponseEntity<Document> insertDocument(
             @RequestPart("document") String documentJson,
             @RequestPart("file") MultipartFile file,
             @PathVariable int userid) throws IOException {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            DocumentEntity document = mapper.readValue(documentJson, DocumentEntity.class);
+            Document document = mapper.readValue(documentJson, Document.class);
 
-            UserEntity user = userv.findUserById(userid);
-            DocumentEntity savedDocument = dserv.insertDocument(document, file, user);
+            User user = userv.findUserById(userid);
+            Document savedDocument = dserv.insertDocument(document, file, user);
             return ResponseEntity.ok(savedDocument);
         } catch (MaxUploadSizeExceededException e) {
             return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE).build();
@@ -168,10 +168,10 @@ public class UploadDocumentController {
     }
 
     @GetMapping("/files/{userid}")
-    public ResponseEntity<List<DocumentEntity>> getDocumentsByUser(@PathVariable int userid) {
+    public ResponseEntity<List<Document>> getDocumentsByUser(@PathVariable int userid) {
         try {
-            UserEntity user = userv.findUserById(userid);
-            List<DocumentEntity> uploadedFiles = dserv.getDocumentsByUser(user);
+            User user = userv.findUserById(userid);
+            List<Document> uploadedFiles = dserv.getDocumentsByUser(user);
             return ResponseEntity.ok(uploadedFiles);
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -179,9 +179,9 @@ public class UploadDocumentController {
     }
 
     @PutMapping("/update/{documentID}")
-    public ResponseEntity<DocumentEntity> updateDocument(@PathVariable int documentID, @RequestParam(name = "newFileName", required = false) String newFileName) {
+    public ResponseEntity<Document> updateDocument(@PathVariable int documentID, @RequestParam(name = "newFileName", required = false) String newFileName) {
         try {
-            DocumentEntity updatedDocument = dserv.updateDocument(documentID, newFileName);
+            Document updatedDocument = dserv.updateDocument(documentID, newFileName);
             return ResponseEntity.ok(updatedDocument);
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -189,9 +189,9 @@ public class UploadDocumentController {
     }
 
     @DeleteMapping("/delete/{documentID}")
-    public ResponseEntity<DocumentEntity> deleteDocument(@PathVariable int documentID) {
+    public ResponseEntity<Document> deleteDocument(@PathVariable int documentID) {
         try {
-            DocumentEntity softDeletedDocument = dserv.deleteDocument(documentID);
+            Document softDeletedDocument = dserv.deleteDocument(documentID);
             return ResponseEntity.ok(softDeletedDocument);
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -201,7 +201,7 @@ public class UploadDocumentController {
     @GetMapping("/files/content/{documentID}")
     public ResponseEntity<byte[]> getFileContentByDocumentID(@PathVariable int documentID) {
         try {
-            DocumentEntity document = dserv.getDocumentById(documentID);
+            Document document = dserv.getDocumentById(documentID);
             byte[] fileContent = dserv.getFileContentByDocumentID(documentID);
             HttpHeaders headers = new HttpHeaders();
 

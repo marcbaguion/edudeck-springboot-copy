@@ -1,7 +1,7 @@
 package com.it332.edudeck.Controller;
 
 
-import com.it332.edudeck.Entity.BillingEntity;
+import com.it332.edudeck.Entity.Billing;
 import com.it332.edudeck.Service.BillingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/billing")
+@RequestMapping("/api/billing/{id}")
 public class BillingController {
     @Autowired
     private BillingService billingService;
 
     @PostMapping
-    public ResponseEntity<BillingEntity> processBilling(@RequestBody BillingEntity billingEntity) {
-        BillingEntity processedBillingEntity = billingService.processBilling(billingEntity);
-        return new ResponseEntity<>(processedBillingEntity, HttpStatus.CREATED);
+    public ResponseEntity<Billing> processBilling(@RequestBody Billing billing) {
+        Billing processedBilling = billingService.processBilling(billing);
+        return new ResponseEntity<>(processedBilling, HttpStatus.CREATED);
     }
 }

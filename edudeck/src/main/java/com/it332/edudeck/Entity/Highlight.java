@@ -12,7 +12,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name="tblhighlight")
-public class HighlightEntity {
+public class Highlight {
 
     @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,17 +26,17 @@ public class HighlightEntity {
 
     @ManyToOne
     @JoinColumn(name = "document_id", nullable = false)
-    private DocumentEntity document;
+    private Document document;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity user;
+    private User user;
 
-    public HighlightEntity() {
+    public Highlight() {
     }
 
-    public HighlightEntity(int highlightId, int startPosition, int endPosition, String highlightType,
-            LocalDateTime dateCreated, boolean isDeleted, DocumentEntity document, UserEntity user) {
+    public Highlight(int highlightId, int startPosition, int endPosition, String highlightType,
+                     LocalDateTime dateCreated, boolean isDeleted, Document document, User user) {
         this.highlightId = highlightId;
         this.startPosition = startPosition;
         this.endPosition = endPosition;
@@ -95,19 +95,19 @@ public class HighlightEntity {
         this.isDeleted = isDeleted;
     }
 
-    public DocumentEntity getDocument() {
+    public Document getDocument() {
         return document;
     }
 
-    public void setDocument(DocumentEntity document) {
+    public void setDocument(Document document) {
         this.document = document;
     }
 
-    public UserEntity getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(UserEntity user) {
+    public void setUser(User user) {
         this.user = user;
     }
 

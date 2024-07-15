@@ -3,7 +3,7 @@ package com.it332.edudeck.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.it332.edudeck.Entity.ReviewSessionEntity;
+import com.it332.edudeck.Entity.ReviewSession;
 import com.it332.edudeck.Repository.ReviewSessionRepository;
 
 import java.util.List;
@@ -14,20 +14,20 @@ public class ReviewSessionService {
     @Autowired
     private ReviewSessionRepository reviewSessionRepository;
 
-    public List<ReviewSessionEntity> getAllReviewSessions() {
+    public List<ReviewSession> getAllReviewSessions() {
         return reviewSessionRepository.findAll();
     }
 
-    public ReviewSessionEntity getReviewSessionById(int id) {
+    public ReviewSession getReviewSessionById(int id) {
         return reviewSessionRepository.findById(id).orElse(null);
     }
 
-    public ReviewSessionEntity createReviewSession(ReviewSessionEntity reviewSession) {
+    public ReviewSession createReviewSession(ReviewSession reviewSession) {
         return reviewSessionRepository.save(reviewSession);
     }
 
-    public ReviewSessionEntity updateReviewSession(int id, ReviewSessionEntity reviewSessionDetails) {
-        ReviewSessionEntity reviewSession = reviewSessionRepository.findById(id).orElse(null);
+    public ReviewSession updateReviewSession(int id, ReviewSession reviewSessionDetails) {
+        ReviewSession reviewSession = reviewSessionRepository.findById(id).orElse(null);
         if (reviewSession != null) {
             reviewSession.setStartTime(reviewSessionDetails.getStartTime());
             reviewSession.setEndTime(reviewSessionDetails.getEndTime());

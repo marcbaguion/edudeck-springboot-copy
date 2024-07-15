@@ -1,6 +1,5 @@
 package com.it332.edudeck.Controller;
 
-import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.it332.edudeck.Entity.UserEntity;
+import com.it332.edudeck.Entity.User;
 import com.it332.edudeck.Service.UserService;
 
 @RestController
@@ -22,7 +21,7 @@ public class LoginController {
     private UserService userv;
 
     @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(@RequestBody UserEntity request) {
+    public ResponseEntity<?> authenticateUser(@RequestBody User request) {
         String username = request.getUsername();
         String password = request.getPassword();
 
@@ -30,7 +29,7 @@ public class LoginController {
         boolean isAuthenticated = userv.authenticateUser(username, password);
 
         if (isAuthenticated) {
-            UserEntity userDetails = userv.getUserDetails(username);
+            User userDetails = userv.getUserDetails(username);
             return ResponseEntity.ok(userDetails);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");

@@ -12,8 +12,8 @@ import com.google.cloud.vertexai.api.SafetySetting;
 import com.google.cloud.vertexai.generativeai.ContentMaker;
 import com.google.cloud.vertexai.generativeai.GenerativeModel;
 import com.google.cloud.vertexai.generativeai.ResponseStream;
-import com.it332.edudeck.Entity.FlashcardDeckEntity;
-import com.it332.edudeck.Entity.FlashcardEntity;
+import com.it332.edudeck.Entity.FlashcardDeck;
+import com.it332.edudeck.Entity.Flashcard;
 import com.it332.edudeck.Repository.FlashcardDeckRepository;
 import com.it332.edudeck.Repository.FlashcardRepository;
 
@@ -114,7 +114,7 @@ public class GeminiFlashcardAI {
     }
 
     private void saveFlashcards(String jsonResponse, int deckId) throws IOException {
-        FlashcardDeckEntity flashcardDeck = flashcardDeckRepository.findById(deckId)
+        FlashcardDeck flashcardDeck = flashcardDeckRepository.findById(deckId)
                 .orElseThrow(() -> new RuntimeException("Deck not found"));
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -125,7 +125,7 @@ public class GeminiFlashcardAI {
             String question = flashcardNode.get("question").asText();
             String answer = flashcardNode.get("answer").asText();
 
-            FlashcardEntity flashcard = new FlashcardEntity(question, answer, flashcardDeck);
+            Flashcard flashcard = new Flashcard(question, answer, flashcardDeck);
             flashcardRepository.save(flashcard);
         }
     }

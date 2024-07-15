@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.it332.edudeck.Entity.QuizItemEntity;
+import com.it332.edudeck.Entity.QuizItem;
 import com.it332.edudeck.Service.QuizItemService;
 
 import java.util.List;
@@ -17,19 +17,19 @@ public class QuizItemController {
     private QuizItemService quizItemService;
 
     @PostMapping("/create")
-    public ResponseEntity<QuizItemEntity> createQuizItem(@RequestBody QuizItemEntity quizItem) {
-        QuizItemEntity createdQuizItem = quizItemService.createQuizItem(quizItem);
+    public ResponseEntity<QuizItem> createQuizItem(@RequestBody QuizItem quizItem) {
+        QuizItem createdQuizItem = quizItemService.createQuizItem(quizItem);
         return ResponseEntity.ok(createdQuizItem);
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<QuizItemEntity>> getAllQuizItems() {
+    public ResponseEntity<List<QuizItem>> getAllQuizItems() {
         return ResponseEntity.ok(quizItemService.getAllQuizItems());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<QuizItemEntity> getQuizItemById(@PathVariable int id) {
-        QuizItemEntity quizItem = quizItemService.getQuizItemById(id)
+    public ResponseEntity<QuizItem> getQuizItemById(@PathVariable int id) {
+        QuizItem quizItem = quizItemService.getQuizItemById(id)
                 .orElseThrow(() -> new RuntimeException("QuizItem not found with id: " + id));
         return ResponseEntity.ok(quizItem);
     }

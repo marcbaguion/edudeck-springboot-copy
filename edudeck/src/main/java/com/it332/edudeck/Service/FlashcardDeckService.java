@@ -3,8 +3,8 @@ package com.it332.edudeck.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.it332.edudeck.Entity.FlashcardDeckEntity;
-import com.it332.edudeck.Entity.UserEntity;
+import com.it332.edudeck.Entity.FlashcardDeck;
+import com.it332.edudeck.Entity.User;
 import com.it332.edudeck.Repository.FlashcardDeckRepository;
 import com.it332.edudeck.Repository.UserRepository;
 
@@ -22,33 +22,33 @@ public class FlashcardDeckService {
     @Autowired
     private UserRepository userRepository;
 
-    public FlashcardDeckEntity createFlashcardDeck(String title, UserEntity user) {
-        FlashcardDeckEntity flashcardDeck = new FlashcardDeckEntity(title, user);
+    public FlashcardDeck createFlashcardDeck(String title, User user) {
+        FlashcardDeck flashcardDeck = new FlashcardDeck(title, user);
         return flashcardDeckRepository.save(flashcardDeck);
     }
 
-    public List<FlashcardDeckEntity> getAllFlashcardDecks() {
+    public List<FlashcardDeck> getAllFlashcardDecks() {
         return flashcardDeckRepository.findAll().stream()
 	        .filter(deck -> !deck.isDeleted())
 	        .collect(Collectors.toList());
     }
 
-    public List<FlashcardDeckEntity> getDecksByUser(int userId) {
-        UserEntity user = userRepository.findById(userId).orElse(null);
+    public List<FlashcardDeck> getDecksByUser(int userId) {
+        User user = userRepository.findById(userId).orElse(null);
         if (user == null) {
             return null;
         }
         return flashcardDeckRepository.findByUserAndIsDeletedFalse(user);
     }
 
-    public Optional<FlashcardDeckEntity> getFlashcardDeckById(int id) {
+    public Optional<FlashcardDeck> getFlashcardDeckById(int id) {
         return flashcardDeckRepository.findById(id);
     }
 
     // Update
 	@SuppressWarnings("finally")
-	public FlashcardDeckEntity updateDeck(int deckId, FlashcardDeckEntity newDeckDetails) {
-		FlashcardDeckEntity deck = new FlashcardDeckEntity();
+	public FlashcardDeck updateDeck(int deckId, FlashcardDeck newDeckDetails) {
+		FlashcardDeck deck = new FlashcardDeck();
 		try {
 			deck = flashcardDeckRepository.findById(deckId).get();
 			//deck = flashcardDeckRepository.findById(deckId).orElseThrow(() -> new NoSuchElementException("Flashcard Deck " + deckId + " does not exist!"));
@@ -63,9 +63,9 @@ public class FlashcardDeckService {
 
     public String deleteFlashcardDeck(int deckId) {
         String msg = "";
-        Optional<FlashcardDeckEntity> flashcardDeck = flashcardDeckRepository.findById(deckId);
+        Optional<FlashcardDeck> flashcardDeck = flashcardDeckRepository.findById(deckId);
         if (flashcardDeck.isPresent()) {
-            FlashcardDeckEntity deck = flashcardDeck.get();
+            FlashcardDeck deck = flashcardDeck.get();
             deck.setDeleted(true);
             flashcardDeckRepository.save(deck);
             msg = "Flashcard Deck " + deckId + " is successfully deleted!";

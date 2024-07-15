@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name="tblflashcard")
-public class FlashcardEntity {
+public class Flashcard {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,11 +29,11 @@ public class FlashcardEntity {
     @ManyToOne
     @JoinColumn(name = "deck_id", nullable = false)
     @JsonBackReference
-    private FlashcardDeckEntity flashcardDeck;
+    private FlashcardDeck flashcardDeck;
 
-    public FlashcardEntity() {}
+    public Flashcard() {}
 
-    public FlashcardEntity(String question, String answer, FlashcardDeckEntity flashcardDeck) {
+    public Flashcard(String question, String answer, FlashcardDeck flashcardDeck) {
         this.question = question;
         this.answer = answer;
         this.flashcardDeck = flashcardDeck;
@@ -79,11 +79,11 @@ public class FlashcardEntity {
         this.isDeleted = isDeleted;
     }
 
-    public FlashcardDeckEntity getFlashcardDeck() {
+    public FlashcardDeck getFlashcardDeck() {
         return flashcardDeck;
     }
 
-    public void setFlashcardDeck(FlashcardDeckEntity flashcardDeck) {
+    public void setFlashcardDeck(FlashcardDeck flashcardDeck) {
         this.flashcardDeck = flashcardDeck;
     }
 

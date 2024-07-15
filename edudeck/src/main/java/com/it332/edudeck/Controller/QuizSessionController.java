@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.it332.edudeck.Entity.QuizSessionEntity;
+import com.it332.edudeck.Entity.QuizSession;
 import com.it332.edudeck.Service.QuizSessionService;
 
 import java.util.List;
@@ -17,19 +17,19 @@ public class QuizSessionController {
     private QuizSessionService quizSessionService;
 
     @PostMapping("/create")
-    public ResponseEntity<QuizSessionEntity> createQuizSession(@RequestBody QuizSessionEntity quizSession) {
-        QuizSessionEntity createdQuizSession = quizSessionService.createQuizSession(quizSession);
+    public ResponseEntity<QuizSession> createQuizSession(@RequestBody QuizSession quizSession) {
+        QuizSession createdQuizSession = quizSessionService.createQuizSession(quizSession);
         return ResponseEntity.ok(createdQuizSession);
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<QuizSessionEntity>> getAllQuizSessions() {
+    public ResponseEntity<List<QuizSession>> getAllQuizSessions() {
         return ResponseEntity.ok(quizSessionService.getAllQuizSessions());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<QuizSessionEntity> getQuizSessionById(@PathVariable int id) {
-        QuizSessionEntity quizSession = quizSessionService.getQuizSessionById(id)
+    public ResponseEntity<QuizSession> getQuizSessionById(@PathVariable int id) {
+        QuizSession quizSession = quizSessionService.getQuizSessionById(id)
                 .orElseThrow(() -> new RuntimeException("QuizSession not found with id: " + id));
         return ResponseEntity.ok(quizSession);
     }

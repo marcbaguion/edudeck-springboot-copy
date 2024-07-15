@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.it332.edudeck.Entity.FlashcardDeckEntity;
+import com.it332.edudeck.Entity.FlashcardDeck;
 import com.it332.edudeck.Service.FlashcardDeckService;
 import com.it332.edudeck.Service.UserService;
 
@@ -22,30 +22,30 @@ public class FlashcardDeckController {
     private UserService userService;
 
     @PostMapping("/createFlashcardDeck")
-    public ResponseEntity<FlashcardDeckEntity> createFlashcardDeck(@RequestBody FlashcardDeckEntity flashcardDeck) {
-        FlashcardDeckEntity createdDeck = flashcardDeckService.createFlashcardDeck(flashcardDeck.getTitle(), flashcardDeck.getUser());
+    public ResponseEntity<FlashcardDeck> createFlashcardDeck(@RequestBody FlashcardDeck flashcardDeck) {
+        FlashcardDeck createdDeck = flashcardDeckService.createFlashcardDeck(flashcardDeck.getTitle(), flashcardDeck.getUser());
         return ResponseEntity.ok(createdDeck);
     }
 
     @GetMapping("/getAllFlashcardDecks")
-    public ResponseEntity<List<FlashcardDeckEntity>> getAllFlashcardDecks() {
+    public ResponseEntity<List<FlashcardDeck>> getAllFlashcardDecks() {
         return ResponseEntity.ok(flashcardDeckService.getAllFlashcardDecks());
     }
 
     @GetMapping("/getFlashcardDeckById/{id}")
-    public ResponseEntity<FlashcardDeckEntity> getFlashcardDeckById(@PathVariable int id) {
-        Optional<FlashcardDeckEntity> flashcardDeck = flashcardDeckService.getFlashcardDeckById(id);
+    public ResponseEntity<FlashcardDeck> getFlashcardDeckById(@PathVariable int id) {
+        Optional<FlashcardDeck> flashcardDeck = flashcardDeckService.getFlashcardDeckById(id);
         return flashcardDeck.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping("/getDecksByUser/{userId}")
-    public List<FlashcardDeckEntity> getDecksByUser(@PathVariable int userId) {
+    public List<FlashcardDeck> getDecksByUser(@PathVariable int userId) {
         return flashcardDeckService.getDecksByUser(userId);
     }
 
     // U - Update a FlashcardDeck record
 	@PutMapping("/updateFlashcardDeck")
-	public FlashcardDeckEntity updateDeck(@RequestParam int deckid,@RequestBody FlashcardDeckEntity newFlashcardDeckDetails) {
+	public FlashcardDeck updateDeck(@RequestParam int deckid, @RequestBody FlashcardDeck newFlashcardDeckDetails) {
 		return flashcardDeckService.updateDeck(deckid, newFlashcardDeckDetails);
 	}
 

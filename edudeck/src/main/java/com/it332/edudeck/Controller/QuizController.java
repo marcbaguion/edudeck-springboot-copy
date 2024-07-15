@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.it332.edudeck.Entity.QuizEntity;
+import com.it332.edudeck.Entity.Quiz;
 import com.it332.edudeck.Service.QuizService;
 
 import java.util.List;
@@ -17,19 +17,19 @@ public class QuizController {
     private QuizService quizService;
 
     @PostMapping("/create")
-    public ResponseEntity<QuizEntity> createQuiz(@RequestBody QuizEntity quiz) {
-        QuizEntity createdQuiz = quizService.createQuiz(quiz);
+    public ResponseEntity<Quiz> createQuiz(@RequestBody Quiz quiz) {
+        Quiz createdQuiz = quizService.createQuiz(quiz);
         return ResponseEntity.ok(createdQuiz);
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<QuizEntity>> getAllQuizzes() {
+    public ResponseEntity<List<Quiz>> getAllQuizzes() {
         return ResponseEntity.ok(quizService.getAllQuizzes());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<QuizEntity> getQuizById(@PathVariable int id) {
-        QuizEntity quiz = quizService.getQuizById(id)
+    public ResponseEntity<Quiz> getQuizById(@PathVariable int id) {
+        Quiz quiz = quizService.getQuizById(id)
                 .orElseThrow(() -> new RuntimeException("Quiz not found with id: " + id));
         return ResponseEntity.ok(quiz);
     }

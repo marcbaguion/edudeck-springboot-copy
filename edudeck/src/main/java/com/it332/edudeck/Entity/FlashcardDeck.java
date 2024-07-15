@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name="tbldeck")
-public class FlashcardDeckEntity {
+public class FlashcardDeck {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,23 +28,23 @@ public class FlashcardDeckEntity {
 
     @ManyToOne
     @JoinColumn(name = "userid", nullable = false)
-    private UserEntity user;
+    private User user;
 
     @OneToOne
     @JoinColumn(name = "document_id")
-    private DocumentEntity document;
+    private Document document;
 
     @OneToMany(mappedBy = "flashcardDeck", cascade = CascadeType.ALL)
     @JsonManagedReference
-    private Set<FlashcardEntity> flashcards;
+    private Set<Flashcard> flashcards;
 
 
     private LocalDateTime dateCreated = LocalDateTime.now();
     private boolean isDeleted = false;
     
-    public FlashcardDeckEntity() {}
+    public FlashcardDeck() {}
 
-    public FlashcardDeckEntity(String title, UserEntity user) {
+    public FlashcardDeck(String title, User user) {
         this.title = title;
         this.user = user;
     }
@@ -65,19 +65,19 @@ public class FlashcardDeckEntity {
         this.title = title;
     }
 
-    public UserEntity getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(UserEntity user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
-    public Set<FlashcardEntity> getFlashcards() {
+    public Set<Flashcard> getFlashcards() {
         return flashcards;
     }
 
-    public void setFlashcards(Set<FlashcardEntity> flashcards) {
+    public void setFlashcards(Set<Flashcard> flashcards) {
         this.flashcards = flashcards;
     }
 
@@ -97,11 +97,11 @@ public class FlashcardDeckEntity {
         this.isDeleted = isDeleted;
     }
 
-    public DocumentEntity getDocument() {
+    public Document getDocument() {
         return document;
     }
 
-    public void setDocument(DocumentEntity document) {
+    public void setDocument(Document document) {
         this.document = document;
     }
     

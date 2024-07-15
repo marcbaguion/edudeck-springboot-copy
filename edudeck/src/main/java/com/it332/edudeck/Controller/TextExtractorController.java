@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.it332.edudeck.Service.DocumentService;
-import com.it332.edudeck.Entity.DocumentEntity;
+import com.it332.edudeck.Entity.Document;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
@@ -30,7 +30,7 @@ public class TextExtractorController {
     @GetMapping("/textextractor/document/{documentid}")
     public ResponseEntity<String> extractTextFromDocument(@PathVariable int documentid) {
         try {
-            DocumentEntity document = documentService.getDocumentById(documentid);
+            Document document = documentService.getDocumentById(documentid);
             byte[] fileContent = document.getFileContent();
             String fileType = document.getFileType().toLowerCase();
             String extractedText = "";

@@ -12,7 +12,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name="tblquizanalytics")
-public class QuizAnalyticsEntity {
+public class QuizAnalytics {
 
     @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,21 +24,21 @@ public class QuizAnalyticsEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity user;
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "quiz_session_id", nullable = false)
-    private QuizSessionEntity quizSession;
+    private QuizSession quizSession;
 
     @ManyToOne
     @JoinColumn(name = "quiz_id", nullable = false)
-    private QuizEntity quiz;
+    private Quiz quiz;
 
-    public QuizAnalyticsEntity() {
+    public QuizAnalytics() {
     }
 
-    public QuizAnalyticsEntity(int quizAnalyticsId, Date dateCreated, Date dateLastQuizTaken, boolean isDeleted,
-            UserEntity user, QuizSessionEntity quizSession, QuizEntity quiz) {
+    public QuizAnalytics(int quizAnalyticsId, Date dateCreated, Date dateLastQuizTaken, boolean isDeleted,
+                         User user, QuizSession quizSession, Quiz quiz) {
         this.quizAnalyticsId = quizAnalyticsId;
         this.dateCreated = dateCreated;
         this.dateLastQuizTaken = dateLastQuizTaken;
@@ -80,27 +80,27 @@ public class QuizAnalyticsEntity {
         this.isDeleted = isDeleted;
     }
 
-    public UserEntity getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(UserEntity user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
-    public QuizSessionEntity getQuizSession() {
+    public QuizSession getQuizSession() {
         return quizSession;
     }
 
-    public void setQuizSession(QuizSessionEntity quizSession) {
+    public void setQuizSession(QuizSession quizSession) {
         this.quizSession = quizSession;
     }
 
-    public QuizEntity getQuiz() {
+    public Quiz getQuiz() {
         return quiz;
     }
 
-    public void setQuiz(QuizEntity quiz) {
+    public void setQuiz(Quiz quiz) {
         this.quiz = quiz;
     }
 

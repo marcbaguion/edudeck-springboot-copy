@@ -3,7 +3,7 @@ package com.it332.edudeck.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.it332.edudeck.Entity.HighlightEntity;
+import com.it332.edudeck.Entity.Highlight;
 import com.it332.edudeck.Repository.HighlightRepository;
 
 import java.util.List;
@@ -15,22 +15,22 @@ public class HighlightService {
     @Autowired
     private HighlightRepository highlightRepository;
 
-    public HighlightEntity createHighlight(HighlightEntity highlight) {
+    public Highlight createHighlight(Highlight highlight) {
         return highlightRepository.save(highlight);
     }
 
-    public List<HighlightEntity> getAllHighlights() {
+    public List<Highlight> getAllHighlights() {
         return highlightRepository.findAll();
     }
 
-    public Optional<HighlightEntity> getHighlightById(int id) {
+    public Optional<Highlight> getHighlightById(int id) {
         return highlightRepository.findById(id);
     }
 
     public boolean softDeleteHighlight(int id) {
-        Optional<HighlightEntity> highlightOptional = highlightRepository.findById(id);
+        Optional<Highlight> highlightOptional = highlightRepository.findById(id);
         if (highlightOptional.isPresent()) {
-            HighlightEntity highlight = highlightOptional.get();
+            Highlight highlight = highlightOptional.get();
             highlight.setDeleted(true);
             highlightRepository.save(highlight);
             return true;

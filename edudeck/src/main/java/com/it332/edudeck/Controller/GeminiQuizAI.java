@@ -12,8 +12,8 @@ import com.google.cloud.vertexai.api.SafetySetting;
 import com.google.cloud.vertexai.generativeai.ContentMaker;
 import com.google.cloud.vertexai.generativeai.GenerativeModel;
 import com.google.cloud.vertexai.generativeai.ResponseStream;
-import com.it332.edudeck.Entity.QuizEntity;
-import com.it332.edudeck.Entity.QuizItemEntity;
+import com.it332.edudeck.Entity.Quiz;
+import com.it332.edudeck.Entity.QuizItem;
 import com.it332.edudeck.Repository.QuizRepository;
 import com.it332.edudeck.Repository.QuizItemRepository;
 
@@ -107,7 +107,7 @@ public class GeminiQuizAI {
     }
 
     private void saveQuizItems(String jsonResponse, int quizId) throws IOException {
-        QuizEntity quiz = quizRepository.findById(quizId)
+        Quiz quiz = quizRepository.findById(quizId)
                 .orElseThrow(() -> new RuntimeException("Quiz not found"));
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -118,7 +118,7 @@ public class GeminiQuizAI {
             String question = quizItemNode.get("question").asText();
             String answer = quizItemNode.get("answer").asText();
 
-            QuizItemEntity quizItem = new QuizItemEntity();
+            QuizItem quizItem = new QuizItem();
             quizItem.setQuestion(question);
             quizItem.setCorrectAnswer(answer);
             quizItem.setQuiz(quiz);

@@ -12,7 +12,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name="tbldocument")
-public class DocumentEntity {
+public class Document {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,23 +30,23 @@ public class DocumentEntity {
 
     @ManyToOne
     @JoinColumn(name = "userid")
-    private UserEntity user;
+    private User user;
 
-    public UserEntity getUser() {
+    public User getUser() {
         return user;
     }
 
 
-    public void setUser(UserEntity user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
 
-    public DocumentEntity() {
+    public Document() {
 
     }
 
-    public DocumentEntity(int documentID, String documentTitle, String fileType, byte[] fileContent, String fileSize) {
+    public Document(int documentID, String documentTitle, String fileType, byte[] fileContent, String fileSize) {
         this.documentID = documentID;
         this.documentTitle = documentTitle;
         this.fileType = fileType;

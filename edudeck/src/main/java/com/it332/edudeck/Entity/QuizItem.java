@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,7 +17,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name="tblquizitem")
-public class QuizItemEntity {
+public class QuizItem {
 
     @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +33,7 @@ public class QuizItemEntity {
     @ManyToOne
     @JoinColumn(name = "quiz_id", nullable = false)
     @JsonBackReference // Prevent infinite recursion
-    private QuizEntity quiz;
+    private Quiz quiz;
 
     @ManyToMany
     @JoinTable(
@@ -42,15 +41,15 @@ public class QuizItemEntity {
         joinColumns = @JoinColumn(name = "quiz_item_id"),
         inverseJoinColumns = @JoinColumn(name = "flashcard_id")
     )
-    private List<FlashcardEntity> flashcards;
+    private List<Flashcard> flashcards;
 
-    public QuizItemEntity() {
+    public QuizItem() {
     }
 
     
 
-    public QuizItemEntity(int quizItemId, String question, List<String> options, String correctAnswer,
-            String userAnswer, boolean isDeleted, QuizEntity quiz, List<FlashcardEntity> flashcards) {
+    public QuizItem(int quizItemId, String question, List<String> options, String correctAnswer,
+                    String userAnswer, boolean isDeleted, Quiz quiz, List<Flashcard> flashcards) {
         this.quizItemId = quizItemId;
         this.question = question;
         this.options = options;
@@ -111,19 +110,19 @@ public class QuizItemEntity {
         this.isDeleted = isDeleted;
     }
 
-    public QuizEntity getQuiz() {
+    public Quiz getQuiz() {
         return quiz;
     }
 
-    public void setQuiz(QuizEntity quiz) {
+    public void setQuiz(Quiz quiz) {
         this.quiz = quiz;
     }
 
-    public List<FlashcardEntity> getFlashcards() {
+    public List<Flashcard> getFlashcards() {
         return flashcards;
     }
 
-    public void setFlashcards(List<FlashcardEntity> flashcards) {
+    public void setFlashcards(List<Flashcard> flashcards) {
         this.flashcards = flashcards;
     }
 

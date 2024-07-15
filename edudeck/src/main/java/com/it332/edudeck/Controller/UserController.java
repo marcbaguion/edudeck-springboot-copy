@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.it332.edudeck.Service.UserService;
-import com.it332.edudeck.Entity.UserEntity;
+import com.it332.edudeck.Entity.User;
 import com.it332.edudeck.Repository.UserRepository;
 @RestController
 @RequestMapping("/user")
@@ -36,13 +36,13 @@ public class UserController {
 	
 	//R -Read
     @GetMapping("/getAllUsers")
-    public List<UserEntity> getAllUser(){
+    public List<User> getAllUser(){
         return userv.getAllUser();
     }
     
 	// U - Update a user record
     @PutMapping("/updateUser/{userid}")
-    public UserEntity updateUser(@PathVariable int userid, @RequestBody UserEntity newUserDetails){
+    public User updateUser(@PathVariable int userid, @RequestBody User newUserDetails){
         return userv.updateUser(userid, newUserDetails);
     }
 
@@ -78,9 +78,9 @@ public class UserController {
  	@PutMapping("/deleteUser/{userid}")
     public ResponseEntity<java.util.Map<String, String>> deleteUser(@PathVariable int userid){
         java.util.Map<String, String> response = new HashMap<>();
-        Optional<UserEntity> userOptional = urepo.findById(userid);
+        Optional<User> userOptional = urepo.findById(userid);
         if (userOptional.isPresent()) {
-            UserEntity user = userOptional.get();
+            User user = userOptional.get();
             user.setDeleted(true); // Set isDeleted to true instead of deleting the record
             urepo.save(user); // Save the updated user record
             response.put("message", "User " + userid + " is successfully deleted");
@@ -110,7 +110,7 @@ public ResponseEntity<Map<String, String>> uploadProfilePicture(@PathVariable in
 
     @GetMapping("/getProfilePicture/{userid}")
     public ResponseEntity<byte[]> getProfilePicture(@PathVariable int userid) {
-        UserEntity user = userv.findUserById(userid);
+        User user = userv.findUserById(userid);
         byte[] profilePicture = user.getProfilePicture();
         return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(profilePicture);
     }
@@ -132,9 +132,9 @@ public ResponseEntity<Map<String, String>> uploadProfilePicture(@PathVariable in
     }
 
     @GetMapping("/getUserDetails/{userid}")
-    public ResponseEntity<UserEntity> getUserDetails(@PathVariable int userid) {
+    public ResponseEntity<User> getUserDetails(@PathVariable int userid) {
         try {
-            UserEntity user = userv.findUserById(userid);
+            User user = userv.findUserById(userid);
             return ResponseEntity.ok(user);
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -142,7 +142,7 @@ public ResponseEntity<Map<String, String>> uploadProfilePicture(@PathVariable in
     }
 
     @PutMapping("/updateUserDetails/{userid}")
-    public ResponseEntity<String> updateUserDetails(@PathVariable int userid, @RequestBody UserEntity updatedUser) {
+    public ResponseEntity<String> updateUserDetails(@PathVariable int userid, @RequestBody User updatedUser) {
         try {
             userv.updateUser(userid, updatedUser);
             return ResponseEntity.ok("User details updated successfully");

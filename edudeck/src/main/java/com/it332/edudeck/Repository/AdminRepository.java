@@ -2,8 +2,8 @@ package com.it332.edudeck.Repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.it332.edudeck.Entity.AdminEntity;
+import com.it332.edudeck.Entity.Admin;
 
-public interface AdminRepository extends JpaRepository<AdminEntity, Integer>{
+public interface AdminRepository extends JpaRepository<Admin, Integer>{
 
 }

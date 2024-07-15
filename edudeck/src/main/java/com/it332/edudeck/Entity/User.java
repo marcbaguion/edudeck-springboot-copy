@@ -15,7 +15,7 @@ import java.util.List;
 
 @Entity
 @Table(name="tbluser")
-public class UserEntity {
+public class User {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,16 +43,16 @@ public class UserEntity {
 	private LocalDate creationDate;
 
 	@OneToMany(mappedBy = "user")
-    private List<DocumentEntity> documents;
+    private List<Document> documents;
 
 	@OneToMany(mappedBy = "user")
-    private List<FlashcardDeckEntity> decks;
+    private List<FlashcardDeck> decks;
 
-	public UserEntity() {
+	public User() {
 		super();
 	}
 
-	public UserEntity(int userid, String username, String password, String email, String bio, String mobileNumber, boolean isDeleted, byte[] profilePicture, LocalDate creationDate) {
+	public User(int userid, String username, String password, String email, String bio, String mobileNumber, boolean isDeleted, byte[] profilePicture, LocalDate creationDate) {
 		super();
 		this.userid = userid;
 		this.username = username;

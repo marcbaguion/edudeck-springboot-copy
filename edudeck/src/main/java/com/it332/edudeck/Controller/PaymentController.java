@@ -1,6 +1,6 @@
 package com.it332.edudeck.Controller;
 
-import com.it332.edudeck.Entity.PaymentEntity;
+import com.it332.edudeck.Entity.Payment;
 import com.it332.edudeck.Service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,13 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/payment")
+
 public class PaymentController {
     @Autowired
     private PaymentService paymentService;
 
     @PostMapping
-    public ResponseEntity<PaymentEntity> processPayment(@RequestBody PaymentEntity paymentEntity) {
-        PaymentEntity processedPaymentEntity = paymentService.processPayment(paymentEntity);
-        return new ResponseEntity<>(processedPaymentEntity, HttpStatus.CREATED);
+    public ResponseEntity<Payment> processPayment(@RequestBody Payment payment) {
+        Payment processedPayment = paymentService.processPayment(payment);
+        return new ResponseEntity<>(processedPayment, HttpStatus.CREATED);
     }
 }

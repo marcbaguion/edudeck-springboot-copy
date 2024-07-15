@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name="tblpayment")
-public class PaymentEntity {
+public class Payment {
     public Long getId() {
         return id;
     }
