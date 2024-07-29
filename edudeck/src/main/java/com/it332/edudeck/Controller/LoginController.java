@@ -1,5 +1,8 @@
 package com.it332.edudeck.Controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,10 +32,12 @@ public class LoginController {
         boolean isAuthenticated = userv.authenticateUser(username, password);
 
         if (isAuthenticated) {
-            User userDetails = userv.getUserDetails(username);
-            return ResponseEntity.ok(userDetails);
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
-        }
+        User userDetails = userv.getUserDetails(username);
+        return ResponseEntity.ok(userDetails);
+    } else {
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Invalid username or password");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+    }
     }
 }
