@@ -10,6 +10,7 @@ import com.it332.edudeck.Repository.FlashcardRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class FlashcardService {
@@ -31,24 +32,33 @@ public class FlashcardService {
     }
      
     public List<Flashcard> getAllFlashcards() {
-        return flashcardRepository.findAll();
+        return flashcardRepository.findAll().stream()
+        .filter(flashcard -> !flashcard.isDeleted())
+        .collect(Collectors.toList());
     }
 
     public List<Flashcard> getAllFlashcardsByDeckId(int deckId) {
-        return flashcardRepository.findByFlashcardDeck_deckId(deckId);
+        return flashcardRepository.findByFlashcardDeck_deckId(deckId).stream()
+        .filter(flashcard -> !flashcard.isDeleted())
+        .collect(Collectors.toList());
     }
 
     public Optional<Flashcard> getFlashcardById(int id) {
         return flashcardRepository.findById(id);
     }
 
-    public void deleteFlashcard(int id) {
+    public String deleteFlashcard(int id) {
+        String msg = "";
         Optional<Flashcard> flashcard = flashcardRepository.findById(id);
         if (flashcard.isPresent()) {
             Flashcard card = flashcard.get();
             card.setDeleted(true);
             flashcardRepository.save(card);
-        }
+            msg = "Flashcard " + id + " is successfully deleted!";
+	    } else {
+	        msg = "Flashcard " + id + " does not exist.";
+	    }
+	    return msg;
     }
     
 }

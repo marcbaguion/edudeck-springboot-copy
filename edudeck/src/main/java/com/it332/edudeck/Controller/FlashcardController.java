@@ -45,11 +45,9 @@ public class FlashcardController {
         return flashcard.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    
-
-    @DeleteMapping("/deleteFlashcard/{id}")
-    public ResponseEntity<Void> deleteFlashcard(@PathVariable int id) {
-        flashcardService.deleteFlashcard(id);
-        return ResponseEntity.noContent().build();
-    }
+    //soft delete
+	@PutMapping("/deleteFlashcard/{id}")
+	public String deleteFlashcard(@PathVariable int id) {
+	    return flashcardService.deleteFlashcard(id);
+	}
 }
