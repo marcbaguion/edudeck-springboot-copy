@@ -3,6 +3,7 @@ package com.it332.edudeck.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.it332.edudeck.Entity.Document;
 import com.it332.edudeck.Entity.FlashcardDeck;
 import com.it332.edudeck.Entity.User;
 import com.it332.edudeck.Repository.FlashcardDeckRepository;
@@ -22,8 +23,9 @@ public class FlashcardDeckService {
     @Autowired
     private UserRepository userRepository;
 
-    public FlashcardDeck createFlashcardDeck(String title, User user) {
+    public FlashcardDeck createFlashcardDeck(String title, User user, Document document) {
         FlashcardDeck flashcardDeck = new FlashcardDeck(title, user);
+        flashcardDeck.setDocument(document);
         return flashcardDeckRepository.save(flashcardDeck);
     }
 

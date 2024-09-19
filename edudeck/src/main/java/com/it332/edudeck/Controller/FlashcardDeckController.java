@@ -23,7 +23,7 @@ public class FlashcardDeckController {
 
     @PostMapping("/createFlashcardDeck")
     public ResponseEntity<FlashcardDeck> createFlashcardDeck(@RequestBody FlashcardDeck flashcardDeck) {
-        FlashcardDeck createdDeck = flashcardDeckService.createFlashcardDeck(flashcardDeck.getTitle(), flashcardDeck.getUser());
+        FlashcardDeck createdDeck = flashcardDeckService.createFlashcardDeck(flashcardDeck.getTitle(), flashcardDeck.getUser(), flashcardDeck.getDocument());
         return ResponseEntity.ok(createdDeck);
     }
 

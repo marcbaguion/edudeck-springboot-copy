@@ -36,7 +36,7 @@ public class GeminiQuizAI {
     private QuizItemRepository quizItemRepository;
 
     @PostMapping("/generate-quiz")
-    public String generateQuizItems(@RequestBody String lessonText, @RequestParam int quizId) {
+    public String generateQuizItems(@RequestBody String lessonText, @RequestParam int quizId, @RequestParam String difficultyLevel, @RequestParam int numQuestions) {
         VertexAI vertexAi = null;
         try {
             vertexAi = new VertexAI("savvy-depot-423506-j9", "us-central1");
@@ -66,9 +66,12 @@ public class GeminiQuizAI {
                             .build()
             );
 
-            String systemInstructionText = "You are to create quiz questions in JSON format with multiple choices, true or false, and short answer identification " +
-                    "based on the given lesson texts to help the student user review and ace his/her actual exams. " +
-                    "The questions should be in a JSON array with each object containing 'question' and 'answer' fields.";
+            String systemInstructionText = "You are to create " + numQuestions + " quiz questions (question and answer, in json format if possible) " +
+                "based on the given lesson texts. The questions should be of '" + difficultyLevel + "' difficulty level to help the student user review " +
+                "and ace their exams. Ensure that there are a variety of questions: at least 3 true/false, at least 2 multiple choice(include the choices in the question the user can input the letter of the correct answer) " +
+                "For language learning materials, provide choices with Japanese characters where necessary. The focus should be on helping the student " +
+                "familiarize themselves with key concepts and terms from the lesson.";
+
 
             Content systemInstruction = ContentMaker.fromMultiModalData(systemInstructionText);
 

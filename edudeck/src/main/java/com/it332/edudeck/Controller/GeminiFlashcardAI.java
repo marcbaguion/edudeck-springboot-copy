@@ -72,9 +72,9 @@ public class GeminiFlashcardAI {
 
             String systemInstructionText = "You are to create flashcard pairs (question and answer, in json format if possible) " +
                     "based on the given lesson texts to help the student user review and ace his/her exams. " +
-                    "The questions may have blanks and the answer is supposed to be blanked out. " +
-                    "There could be true or false. Focus on helping the student users familiarize, remember, " +
-                    "and learn the important keywords, points, and people in the lesson.";
+                    "design it in a way that when the user reads the question/flashcardfront, s/he has idea of whats the answer/flashcardback. " +
+                    " the use of the flashcards is to help the user understand and not memorize the lesson." +
+                    "make the answers/flashcardback easier to understand and even give tips to the user to immediately remember the concept.";
 
             Content systemInstruction = ContentMaker.fromMultiModalData(systemInstructionText);
 
