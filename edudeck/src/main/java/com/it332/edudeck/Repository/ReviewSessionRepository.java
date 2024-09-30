@@ -6,4 +6,6 @@ import com.it332.edudeck.Entity.ReviewSession;
 
 public interface ReviewSessionRepository extends JpaRepository<ReviewSession, Integer>{
 
+
+    
 }

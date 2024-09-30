@@ -33,16 +33,24 @@ public class ReviewSession {
     @OneToOne
     @JoinColumn(name = "current_flashcard_id")
     private Flashcard currentFlashcard;
+    
+    private boolean isMemorized;
+    private int currentCardIndex;
+    private boolean isPaused;
+
 
     public ReviewSession() {
     }
 
     public ReviewSession(int reviewSessionId, LocalDateTime startTime, LocalDateTime endTime,
-                         FlashcardDeck flashcardDeck) {
+                         FlashcardDeck flashcardDeck, boolean isMemorized, int currentCardIndex, boolean isPaused) {
         this.reviewSessionId = reviewSessionId;
         this.startTime = startTime;
         this.endTime = endTime;
         this.flashcardDeck = flashcardDeck;
+        this.isMemorized = isMemorized;
+        this.currentCardIndex = currentCardIndex;
+        this.isPaused = isPaused;
     }
 
     public int getReviewSessionId() {
@@ -93,6 +101,28 @@ public class ReviewSession {
         this.currentFlashcard = currentFlashcard;
     }
 
+    public boolean isMemorized() {
+        return isMemorized;
+    }
     
+    public void setIsMemorized(boolean isMemorized) {
+        this.isMemorized = isMemorized;
+    }
+    
+    public int getCurrentCardIndex() {
+        return currentCardIndex;
+    }
+
+    public void setCurrentCardIndex(int currentCardIndex) {
+        this.currentCardIndex = currentCardIndex;
+    }
+
+    public boolean isPaused() {
+        return isPaused;
+    }
+    
+    public void setPaused(boolean isPaused) {
+        this.isPaused = isPaused;
+    }
     
 }

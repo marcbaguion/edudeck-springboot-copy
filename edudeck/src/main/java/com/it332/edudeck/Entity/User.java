@@ -19,6 +19,7 @@ public class User {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "userid") 
 	private int userid;
 	
 	@Column(nullable = false, unique = true)
@@ -36,7 +37,7 @@ public class User {
 	private boolean isDeleted = false;
 
 	@Lob
-	@Column(name = "profile_picture", columnDefinition="BLOB")
+	@Column(name = "profile_picture", columnDefinition="LONGBLOB")
 	private byte[] profilePicture;
 
 	@Column(name = "creation_date")
