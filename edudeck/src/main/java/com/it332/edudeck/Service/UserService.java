@@ -121,7 +121,6 @@ public class UserService {
         user.setProfilePicture(null); // Or any logic to remove the profile picture
         urepo.save(user);
     }
-    
 }
 
 

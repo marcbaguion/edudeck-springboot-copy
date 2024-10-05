@@ -76,8 +76,8 @@ public class UserController {
 
  	// D - Delete a user record
  	@PutMapping("/deleteUser/{userid}")
-    public ResponseEntity<java.util.Map<String, String>> deleteUser(@PathVariable int userid){
-        java.util.Map<String, String> response = new HashMap<>();
+    public ResponseEntity<Map<String, String>> deleteUser(@PathVariable int userid){
+        Map<String, String> response = new HashMap<>();
         Optional<User> userOptional = urepo.findById(userid);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
@@ -140,6 +140,26 @@ public ResponseEntity<Map<String, String>> uploadProfilePicture(@PathVariable in
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
+    @GetMapping("/getEmail/{userid}")
+    public ResponseEntity<String> getEmailByUserId(@PathVariable int userid) {
+        try {
+            // Retrieve the user by ID using the existing service method
+            User user = userv.findUserById(userid);
+
+            // Check if the user exists and is not deleted
+            if (user != null && !user.isDeleted()) {
+                return ResponseEntity.ok(user.getEmail()); // Return the email address
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found or deleted");
+            }
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error retrieving user email");
+        }
+    }
+
 
     @PutMapping("/updateUserDetails/{userid}")
     public ResponseEntity<String> updateUserDetails(@PathVariable int userid, @RequestBody User updatedUser) {
